@@ -2,13 +2,14 @@
 
 import 'package:caster/providers/audio_player_controller_provider.dart';
 import 'package:caster/providers/podcast_search_data_provider.dart';
-import 'package:caster/screens/loading_screen.dart';
-import 'package:caster/screens/play_screen.dart';
-import 'package:caster/screens/recently_played_screen.dart';
-import 'package:caster/screens/subscriptions_screen.dart';
+// import 'package:caster/screens/loading_screen.dart';
+import 'package:caster/screens/main_nav.dart';
+// import 'package:caster/screens/play_screen.dart';
+// import 'package:caster/screens/recently_played_screen.dart';
+// import 'package:caster/screens/subscriptions_screen.dart';
 import 'package:caster/utilities/subscribe.dart';
 import 'package:flutter/material.dart';
-import 'package:caster/screens/homescreen.dart';
+// import 'package:caster/screens/homescreen.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:provider/provider.dart';
 
@@ -41,13 +42,13 @@ class MyApp extends StatelessWidget {
           // primaryColor: Colors.black54,
           // primarySwatch: Colors.blue,
           ),
-      home: HomeScreen(),
-      routes: {
-        'PlayScreen': (context) => PlayScreen(),
-        'LoadingScreen': (context) => LoadingScreen(),
-        'RecentlyPlayed': (context) => RecentlyPlayedScreen(),
-        'SubscriptionScreen': (context) => SubscriptionsScreen(),
-      },
+      home: MainNav(),
+      // routes: {
+      //   'PlayScreen': (context) => PlayScreen(),
+      //   'LoadingScreen': (context) => LoadingScreen(),
+      //   'RecentlyPlayed': (context) => RecentlyPlayedScreen(),
+      //   'SubscriptionScreen': (context) => SubscriptionsScreen(),
+      // },
     );
   }
 }

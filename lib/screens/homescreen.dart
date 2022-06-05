@@ -89,7 +89,6 @@ class _HomeScreenState extends State<HomeScreen> {
             //   player: player,
             //   // playerState: player.playerState
             // ),
-            NavMenu(),
           ],
         ),
       ),

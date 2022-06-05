@@ -62,7 +62,6 @@ class PlayScreen extends StatelessWidget {
             TrackInfo(),
             TrackProgressBar(),
             PlayerControls(),
-            NavMenu(),
           ],
         ),
       ),

@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, must_be_immutable, prefer_typing_uninitialized_variables, use_key_in_widget_constructors, unused_import
 
+import 'package:caster/screens/main_nav.dart';
 import 'package:caster/screens/play_screen.dart';
 import 'package:caster/providers/podcast_search_data_provider.dart';
 import 'package:caster/providers/audio_player_controller_provider.dart';
@@ -29,7 +30,9 @@ class _LoadingScreenState extends State<LoadingScreen> {
       context,
       MaterialPageRoute(
         builder: (context) {
-          return PlayScreen();
+          return MainNav(
+            startIndex: 2,
+          );
         },
       ),
     );

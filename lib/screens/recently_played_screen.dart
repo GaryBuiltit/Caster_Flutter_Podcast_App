@@ -62,7 +62,6 @@ class _RecentlyPlayedScreenState extends State<RecentlyPlayedScreen> {
                 children: recentTrackCard(),
               ),
             ),
-            NavMenu(),
           ],
         ),
       ),

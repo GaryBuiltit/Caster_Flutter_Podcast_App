@@ -49,7 +49,6 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
                 children: context.watch<Subscribe>().addsubscriptionCard(),
               ),
             ),
-            NavMenu(),
           ],
         ),
       ),
