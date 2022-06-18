@@ -1,7 +1,6 @@
 // ignore_for_file: use_key_in_widget_constructors, prefer_const_literals_to_create_immutables, unused_local_variable, prefer_const_constructors_in_immutables, prefer_typing_uninitialized_variables, prefer_const_constructors, unused_import
 
 import 'package:caster/providers/podcast_search_data_provider.dart';
-import 'package:caster/utilities/nav_menu.dart';
 import 'package:caster/utilities/subscribe.dart';
 import 'package:caster/utilities/track_info.dart';
 import 'package:caster/utilities/track_progress_bar.dart';
@@ -20,21 +19,23 @@ class PlayScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.orange[800],
+          centerTitle: true,
+          automaticallyImplyLeading: false,
+          leading: IconButton(
+            icon: Icon(Icons.bookmark_add),
+            onPressed: () {
+              context
+                  .read<Subscribe>()
+                  .addSubscription(context.read<SearchData>().show);
+              // Subscribe().addSubscription(context.read<SearchData>().show);
+            },
+          ),
+          title: Text('Now Playing'),
+        ),
         body: Column(
-          // mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    Subscribe()
-                        .addSubscription(context.read<SearchData>().show);
-                  },
-                  child: Text("Subscribe"),
-                ),
-              ],
-            ),
             Expanded(
               // flex: 5,
               child: Padding(

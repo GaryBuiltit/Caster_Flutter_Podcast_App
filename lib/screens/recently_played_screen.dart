@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_typing_uninitialized_variables
 
 import 'package:caster/providers/podcast_search_data_provider.dart';
-import 'package:caster/utilities/nav_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -42,7 +41,7 @@ class _RecentlyPlayedScreenState extends State<RecentlyPlayedScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.orange[700],
+          backgroundColor: Colors.orange[800],
           centerTitle: true,
           automaticallyImplyLeading: false,
           title: Text('Recently played Episodes'),

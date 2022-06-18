@@ -3,7 +3,6 @@
 import 'package:caster/providers/audio_player_controller_provider.dart';
 import 'package:caster/screens/loading_screen.dart';
 import 'package:caster/providers/podcast_search_data_provider.dart';
-import 'package:caster/utilities/nav_menu.dart';
 import 'package:caster/utilities/player_controls.dart';
 import 'package:caster/utilities/player_controls_check.dart';
 import 'package:flutter/material.dart';
