@@ -7,6 +7,7 @@ import 'package:caster/utilities/player_controls.dart';
 import 'package:caster/utilities/player_controls_check.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sizer/sizer.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -39,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Center(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 45),
+                      padding: EdgeInsets.symmetric(horizontal: 12.w),
                       child: TextField(
                         textAlign: TextAlign.center,
                         textInputAction: TextInputAction.done,
@@ -56,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: ElevatedButton.styleFrom(
                           primary: Colors.orange[800],
                           elevation: 15,
-                          padding: EdgeInsets.only(right: 40, left: 20)),
+                          padding: EdgeInsets.only(right: 10.w, left: 5.w)),
                       onPressed: () async {
                         if (player.playing) {
                           player.stop();
@@ -75,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           'Start Casting',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 20,
+                            fontSize: 14.sp,
                           ),
                         ),
                       ),

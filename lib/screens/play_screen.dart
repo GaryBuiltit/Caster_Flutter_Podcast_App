@@ -13,6 +13,7 @@ import 'package:caster/utilities/player_controls.dart';
 import 'package:caster/providers/audio_player_controller_provider.dart';
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:marquee/marquee.dart';
+import 'package:sizer/sizer.dart';
 
 class PlayScreen extends StatelessWidget {
   @override
@@ -29,7 +30,6 @@ class PlayScreen extends StatelessWidget {
               context
                   .read<Subscribe>()
                   .addSubscription(context.read<SearchData>().show);
-              // Subscribe().addSubscription(context.read<SearchData>().show);
             },
           ),
           title: Text('Now Playing'),
@@ -37,13 +37,12 @@ class PlayScreen extends StatelessWidget {
         body: Column(
           children: [
             Expanded(
-              // flex: 5,
               child: Padding(
-                padding: const EdgeInsets.only(
-                  top: 35,
-                  left: 20,
-                  right: 20,
-                  bottom: 30,
+                padding: EdgeInsets.only(
+                  top: 10.h,
+                  left: 6.w,
+                  right: 6.w,
+                  bottom: 6.h,
                 ),
                 child: SizedBox(
                   child: (context.watch<SearchData>().episodePic != null)
@@ -52,9 +51,9 @@ class PlayScreen extends StatelessWidget {
                           context.watch<SearchData>().episodePic,
                         ))
                       : Container(
-                          margin: EdgeInsets.only(top: 150),
-                          width: 100,
-                          height: 100,
+                          margin: EdgeInsets.only(top: 45.h),
+                          width: 30.w,
+                          height: 30.h,
                           child: CircularProgressIndicator(),
                         ),
                 ),

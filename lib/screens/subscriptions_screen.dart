@@ -3,6 +3,7 @@
 import 'package:caster/utilities/subscribe.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sizer/sizer.dart';
 
 class SubscriptionsScreen extends StatefulWidget {
   const SubscriptionsScreen({Key? key}) : super(key: key);
@@ -32,25 +33,15 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
         ),
         body: Column(
           children: [
-            // Padding(
-            //   padding: const EdgeInsets.only(bottom: 15),
-            //   child: Text(
-            //     "Subscriptions",
-            //     style: TextStyle(
-            //       fontSize: 30,
-            //       fontWeight: FontWeight.w700,
-            //     ),
-            //   ),
-            // ),
             Expanded(
               child: GridView(
                 padding: EdgeInsets.only(
-                  top: 10,
-                  left: 5,
-                  right: 5,
+                  top: 2.h,
+                  left: 1.w,
+                  right: 1.w,
                 ),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  mainAxisSpacing: 15,
+                  mainAxisSpacing: 2.h,
                   // maxCrossAxisExtent: 3,
                   crossAxisCount: 3,
                 ),

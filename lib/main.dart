@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 // import 'package:caster/screens/homescreen.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:provider/provider.dart';
+import 'package:sizer/sizer.dart';
 
 void main() async {
   await JustAudioBackground.init(
@@ -35,20 +36,22 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Caster',
-      theme: ThemeData(
-          // primaryColor: Colors.black54,
-          // primarySwatch: Colors.blue,
-          ),
-      home: MainNav(),
-      // routes: {
-      //   'PlayScreen': (context) => PlayScreen(),
-      //   'LoadingScreen': (context) => LoadingScreen(),
-      //   'RecentlyPlayed': (context) => RecentlyPlayedScreen(),
-      //   'SubscriptionScreen': (context) => SubscriptionsScreen(),
-      // },
-    );
+    return Sizer(builder: (context, portiat, mobile) {
+      return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Caster',
+        theme: ThemeData(
+            // primaryColor: Colors.black54,
+            // primarySwatch: Colors.blue,
+            ),
+        home: MainNav(),
+        // routes: {
+        //   'PlayScreen': (context) => PlayScreen(),
+        //   'LoadingScreen': (context) => LoadingScreen(),
+        //   'RecentlyPlayed': (context) => RecentlyPlayedScreen(),
+        //   'SubscriptionScreen': (context) => SubscriptionsScreen(),
+        // },
+      );
+    });
   }
 }

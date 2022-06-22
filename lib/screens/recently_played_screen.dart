@@ -3,6 +3,7 @@
 import 'package:caster/providers/podcast_search_data_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sizer/sizer.dart';
 
 class RecentlyPlayedScreen extends StatefulWidget {
   const RecentlyPlayedScreen({Key? key}) : super(key: key);
@@ -49,13 +50,6 @@ class _RecentlyPlayedScreenState extends State<RecentlyPlayedScreen> {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            // Text(
-            //   "Recently Played Episodes",
-            //   style: TextStyle(
-            //     fontSize: 30,
-            //     fontWeight: FontWeight.w700,
-            //   ),
-            // ),
             Expanded(
               child: ListView(
                 children: recentTrackCard(),
@@ -83,7 +77,7 @@ class RecentlyPlayedCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: EdgeInsets.all(1.h),
       child: Card(
         // shape: ,
         elevation: 20,
@@ -98,21 +92,21 @@ class RecentlyPlayedCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(left: 5),
+                    padding: EdgeInsets.only(left: 1.w),
                     child: Text(
                       showtitle,
                       style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 5),
+                    padding: EdgeInsets.only(left: 1.w),
                     child: Text(
                       episodeTitle,
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 12.sp,
                       ),
                     ),
                   ),

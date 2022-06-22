@@ -13,13 +13,13 @@ class MainNav extends StatefulWidget {
 }
 
 class _MainNavState extends State<MainNav> {
-  var selectedIndex;
+  late int selectedIndex;
 
   static List<Widget> screenOptions = [
     HomeScreen(),
-    RecentlyPlayedScreen(),
+    const RecentlyPlayedScreen(),
     PlayScreen(),
-    SubscriptionsScreen(),
+    const SubscriptionsScreen(),
   ];
 
   void onItemTapped(int index) {
