@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_typing_uninitialized_variables, prefer_const_literals_to_create_immutables
 
-import 'package:caster/utilities/subscribe.dart';
+import 'package:caster/providers/subscribe.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -13,13 +13,15 @@ class SubscriptionsScreen extends StatefulWidget {
 }
 
 class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
-  // List subscriptions = [];
+  void initCards() async {
+    await Provider.of<Subscribe>(context, listen: false).makeSubCards();
+  }
 
-  // @override
-  // void initState() {
-  //   subscriptions = Provider.of<Subscribe>(context, listen: false).;
-  //   super.initState();
-  // }
+  @override
+  void initState() {
+    super.initState();
+    initCards();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +47,7 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
                   // maxCrossAxisExtent: 3,
                   crossAxisCount: 3,
                 ),
-                children: context.read<Subscribe>().subscriptionCards,
+                children: context.watch<Subscribe>().subscriptionCards,
               ),
             ),
           ],

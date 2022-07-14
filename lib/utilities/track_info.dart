@@ -23,7 +23,7 @@ class TrackInfo extends StatelessWidget {
               height: 50,
               child: Marquee(
                   velocity: 25,
-                  text: context.watch<SearchData>().episodeTitle,
+                  text: context.watch<SearchData>().episodeTitle != null ?context.watch<SearchData>().episodeTitle : '' ,
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w900,
@@ -39,7 +39,7 @@ class TrackInfo extends StatelessWidget {
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Text(
-                context.watch<SearchData>().showTitle,
+                context.watch<SearchData>().showTitle != null?context.watch<SearchData>().showTitle : '',
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,

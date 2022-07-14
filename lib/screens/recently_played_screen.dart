@@ -84,7 +84,9 @@ class RecentlyPlayedCard extends StatelessWidget {
         child: Row(
           children: [
             Expanded(
-              child: Image(image: NetworkImage(episodePic)),
+              child: Image(
+                
+                image: NetworkImage(episodePic),),
             ),
             Expanded(
               flex: 2,

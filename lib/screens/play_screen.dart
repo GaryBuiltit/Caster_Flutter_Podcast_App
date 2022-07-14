@@ -1,7 +1,8 @@
 // ignore_for_file: use_key_in_widget_constructors, prefer_const_literals_to_create_immutables, unused_local_variable, prefer_const_constructors_in_immutables, prefer_typing_uninitialized_variables, prefer_const_constructors, unused_import
 
 import 'package:caster/providers/podcast_search_data_provider.dart';
-import 'package:caster/utilities/subscribe.dart';
+import 'package:caster/providers/subscribe.dart';
+import 'package:caster/utilities/player_controls_check.dart';
 import 'package:caster/utilities/track_info.dart';
 import 'package:caster/utilities/track_progress_bar.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,14 @@ import 'package:marquee/marquee.dart';
 import 'package:sizer/sizer.dart';
 
 class PlayScreen extends StatelessWidget {
+  bool checkSearchStatus(context) {
+    bool status =
+        Provider.of<SearchData>(context, listen: true).currentSearch != null
+            ? true
+            : false;
+    return status;
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -34,36 +43,38 @@ class PlayScreen extends StatelessWidget {
           ),
           title: Text('Now Playing'),
         ),
-        body: Column(
-          children: [
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.only(
-                  top: 10.h,
-                  left: 6.w,
-                  right: 6.w,
-                  bottom: 6.h,
-                ),
-                child: SizedBox(
-                  child: (context.watch<SearchData>().episodePic != null)
-                      ? Image(
-                          image: NetworkImage(
-                          context.watch<SearchData>().episodePic,
-                        ))
-                      : Container(
-                          margin: EdgeInsets.only(top: 45.h),
-                          width: 30.w,
-                          height: 30.h,
-                          child: CircularProgressIndicator(),
-                        ),
-                ),
-              ),
-            ),
-            TrackInfo(),
-            TrackProgressBar(),
-            PlayerControls(),
-          ],
-        ),
+        body: checkSearchStatus(context) == true
+            ? Column(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        top: 10.h,
+                        left: 6.w,
+                        right: 6.w,
+                        bottom: 6.h,
+                      ),
+                      child: SizedBox(
+                        child: (context.watch<SearchData>().episodePic != null)
+                            ? Image(
+                                image: NetworkImage(
+                                context.watch<SearchData>().episodePic,
+                              ))
+                            : Container(
+                                margin: EdgeInsets.only(top: 45.h),
+                                width: 30.w,
+                                height: 30.h,
+                                child: CircularProgressIndicator(),
+                              ),
+                      ),
+                    ),
+                  ),
+                  TrackInfo(),
+                  TrackProgressBar(),
+                  PlayerControls(),
+                ],
+              )
+            : SizedBox(),
       ),
     );
   }
