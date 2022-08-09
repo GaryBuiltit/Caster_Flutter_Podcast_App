@@ -5,6 +5,7 @@ import 'package:caster/screens/loading_screen.dart';
 import 'package:caster/providers/podcast_search_data_provider.dart';
 import 'package:caster/utilities/player_controls.dart';
 import 'package:caster/utilities/player_controls_check.dart';
+import 'package:caster/utilities/show_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -23,73 +24,109 @@ class _HomeScreenState extends State<HomeScreen> {
         Provider.of<AudioPlayerController>(context, listen: true).player;
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.white,
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Expanded(
-              child: Container(
-                padding: EdgeInsets.only(),
-                child: Image.asset("assets/images/CASTER LOGO.png"),
-              ),
-            ),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Center(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12.w),
-                      child: TextField(
-                        textAlign: TextAlign.center,
-                        textInputAction: TextInputAction.done,
-                        onChanged: (text) {
-                          setState(() {
-                            searchText = text;
-                          });
-                        },
-                      ),
-                    ),
-                  ),
-                  Center(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          primary: Colors.orange[800],
-                          elevation: 15,
-                          padding: EdgeInsets.only(right: 10.w, left: 5.w)),
-                      onPressed: () async {
-                        if (player.playing) {
-                          player.stop();
-                        }
-                        context.read<SearchData>().currentSearch = searchText;
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => LoadingScreen(),
-                          ),
-                        );
-                      },
+        appBar: AppBar(
+          backgroundColor: Colors.grey[100],
+          elevation: 0,
+          automaticallyImplyLeading: false,
+          centerTitle: true,
+          title: Image.asset(
+            "assets/images/CASTER LOGO.png",
+            height: 22.h,
+          ),
+        ),
+        backgroundColor: Colors.grey[100],
+        body: SingleChildScrollView(
+          child: Column(
+            // mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(top: 3.5.h, bottom: 3.5.h),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Center(
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 15),
-                        child: Text(
-                          'Start Casting',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14.sp,
+                        padding: EdgeInsets.symmetric(horizontal: 10.w),
+                        child: SizedBox(
+                          height: 7.h,
+                          child: TextField(
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10))),
+                            textAlign: TextAlign.center,
+                            textInputAction: TextInputAction.done,
+                            onChanged: (text) {
+                              setState(() {
+                                searchText = text;
+                              });
+                            },
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                    Center(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            primary: Colors.orange[800],
+                            elevation: 10,
+                            padding: EdgeInsets.only(right: 10.w, left: 5.w)),
+                        onPressed: () async {
+                          if (player.playing) {
+                            player.stop();
+                          }
+                          context.read<SearchData>().currentSearch = searchText;
+
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LoadingScreen(),
+                            ),
+                          );
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 15),
+                          child: Text(
+                            'Start Casting',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14.sp,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            // PlayerControlsToggle(
-            //   player: player,
-            //   // playerState: player.playerState
-            // ),
-          ],
+              Text('Popular Now', 
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                fontSize: 18,
+              ),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 15),
+                height: 175,
+                // width: MediaQuery.of(context).size.width,
+                child: ListView(
+                  padding: EdgeInsets.symmetric(horizontal: 5),
+                  scrollDirection: Axis.horizontal,
+                  children: Provider.of<SearchData>(context).topShows,
+                ),
+              ),
+              Wrap(
+                spacing: 25,
+                children: Provider.of<SearchData>(context).getGenres(),
+                direction: Axis.horizontal,
+              )
+              // PlayerControlsToggle(
+              //   player: player,
+              //   // playerState: player.playerState
+              // ),
+            ],
+          ),
         ),
       ),
     );

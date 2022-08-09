@@ -1,11 +1,13 @@
 import 'package:caster/models/subscription.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:podcast_search/podcast_search.dart';
-import 'package:caster/utilities/subscription_card.dart';
+import 'package:caster/utilities/show_card.dart';
 import 'package:caster/file_manager.dart';
 
 class Subscribe with ChangeNotifier {
   List<Widget> subscriptionCards = [];
+
+
 
   void addSubscription(Podcast show) async {
     List<dynamic> subs = [];
@@ -66,13 +68,16 @@ class Subscribe with ChangeNotifier {
         // print(subscription);
         var showPic = subscription['showPic'];
         var showTitle = subscription['showTitle'];
-        var subcard = SubscriptionCard(
+        var subcard = ShowCard(
           showTitle: showTitle,
           showPic: showPic,
+          onTap: () {
+        Subscribe().unsubscribe(showTitle!);
+      },
         );
         subscriptionCards.add(subcard);
       }
-      print(subscriptionCards.length);
+      // print(subscriptionCards.length);
       notifyListeners();
     }
   }

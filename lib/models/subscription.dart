@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class Subscription {
   final String showURL;
   final String showPic;
@@ -19,13 +17,4 @@ class Subscription {
 }
 
 
-
-
-  // makeSubscription() {
-  //   Map<String?, Map> subscription = {
-  //     showTitle!: {"show url": showURL!, "show pic": showPic!}
-  //   };
-  //   return subscription;
-  // }
-  
 

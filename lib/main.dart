@@ -2,6 +2,7 @@
 
 import 'package:caster/providers/audio_player_controller_provider.dart';
 import 'package:caster/providers/podcast_search_data_provider.dart';
+import 'package:caster/providers/recent_tracks_provider.dart';
 import 'package:caster/screens/main_nav.dart';
 import 'package:caster/providers/subscribe.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => SearchData()),
         ChangeNotifierProvider(create: (_) => AudioPlayerController()),
         ChangeNotifierProvider(create: (_) => Subscribe()),
+        ChangeNotifierProvider(create: (_) => RecentTrackProvider()),
       ],
       child: MyApp(),
     ),
@@ -28,25 +30,31 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return Sizer(builder: (context, portiat, mobile) {
-      return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Caster',
-        theme: ThemeData(
-            // primaryColor: Colors.black54,
-            // primarySwatch: Colors.blue,
-            ),
-        home: MainNav(),
-        // routes: {
-        //   'PlayScreen': (context) => PlayScreen(),
-        //   'LoadingScreen': (context) => LoadingScreen(),
-        //   'RecentlyPlayed': (context) => RecentlyPlayedScreen(),
-        //   'SubscriptionScreen': (context) => SubscriptionsScreen(),
-        // },
-      );
-    });
+    Provider.of<Subscribe>(context, listen: false).makeSubCards();
+    Provider.of<SearchData>(context, listen: false).getPopular();
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).requestFocus(FocusNode());
+      },
+      child: Sizer(builder: (context, portiat, mobile) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Caster',
+          theme: ThemeData(
+              // primaryColor: Colors.black54,
+              // primarySwatch: Colors.blue,
+              ),
+          home: MainNav(),
+          // routes: {
+          //   'PlayScreen': (context) => PlayScreen(),
+          //   'LoadingScreen': (context) => LoadingScreen(),
+          //   'RecentlyPlayed': (context) => RecentlyPlayedScreen(),
+          //   'SubscriptionScreen': (context) => SubscriptionsScreen(),
+          // },
+        );
+      }),
+    );
   }
 }
