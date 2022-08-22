@@ -4,7 +4,6 @@ import 'package:caster/providers/recent_tracks_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-
 class RecentlyPlayedScreen extends StatefulWidget {
   const RecentlyPlayedScreen({Key? key}) : super(key: key);
 
@@ -13,9 +12,6 @@ class RecentlyPlayedScreen extends StatefulWidget {
 }
 
 class _RecentlyPlayedScreenState extends State<RecentlyPlayedScreen> {
-  List playedShow = [];
-
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -31,8 +27,8 @@ class _RecentlyPlayedScreenState extends State<RecentlyPlayedScreen> {
           children: [
             Expanded(
               child: ListView(
-                children: Provider.of<RecentTrackProvider>(context).recentCards
-              ),
+                  children: context.watch<RecentTrackProvider>().recentCards),
+              // Provider.of<RecentTrackProvider>(context).recentCards),
             ),
           ],
         ),
@@ -40,4 +36,3 @@ class _RecentlyPlayedScreenState extends State<RecentlyPlayedScreen> {
     );
   }
 }
-

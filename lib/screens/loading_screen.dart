@@ -4,18 +4,27 @@ import 'package:caster/screens/main_nav.dart';
 import 'package:caster/screens/play_screen.dart';
 import 'package:caster/providers/podcast_search_data_provider.dart';
 import 'package:caster/providers/audio_player_controller_provider.dart';
+import 'package:caster/screens/search_result_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:provider/provider.dart';
 
 class LoadingScreen extends StatefulWidget {
+  LoadingScreen({this.genre});
+  final genre;
+
   @override
   _LoadingScreenState createState() => _LoadingScreenState();
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
+  var searchType;
+
   void showData() async {
-    await context.read<SearchData>().podcastSearch();
+    if (widget.genre != null) {
+      await context.read<SearchData>().discoverySearch(genre: widget.genre);
+    }
+
     context.read<AudioPlayerController>().initPlayer(
           episodeURL: context.read<SearchData>().episodeURL,
           episodeTitle:
@@ -23,8 +32,6 @@ class _LoadingScreenState extends State<LoadingScreen> {
           showTitle: Provider.of<SearchData>(context, listen: false).showTitle,
           showPic: Provider.of<SearchData>(context, listen: false).showPic,
         );
-    // Provider.of<AudioPlayerController>(context, listen: false)
-    //     .initPlayer(context.watch<SearchData>().episodeURL);
 
     Navigator.push(
       context,
@@ -36,12 +43,17 @@ class _LoadingScreenState extends State<LoadingScreen> {
         },
       ),
     );
+
+    // if (searchType == 'search') {
+    //   Navigator.pushNamed(context, SearchResultsScreen.id);
+    // }
   }
 
   @override
   void initState() {
-    showData();
     super.initState();
+    searchType = context.read<SearchData>().searchType;
+    showData();
   }
 
   @override

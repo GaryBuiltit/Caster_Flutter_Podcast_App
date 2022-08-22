@@ -28,7 +28,7 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.orange[700],
+          backgroundColor: Colors.orange[400],
           centerTitle: true,
           automaticallyImplyLeading: false,
           title: Text('Subscriptions'),

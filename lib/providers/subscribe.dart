@@ -1,24 +1,24 @@
 import 'package:caster/models/subscription.dart';
+import 'package:caster/providers/podcast_data.dart';
+import 'package:caster/providers/podcast_search_data_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:podcast_search/podcast_search.dart';
 import 'package:caster/utilities/show_card.dart';
 import 'package:caster/file_manager.dart';
+import 'package:webfeed/webfeed.dart';
 
 class Subscribe with ChangeNotifier {
   List<Widget> subscriptionCards = [];
 
-
-
-  void addSubscription(Podcast show) async {
+  void addSubscription(String showURL) async {
     List<dynamic> subs = [];
-    Map<String, dynamic> subscription =
-        Subscription(show.image!, show.title!, show.url!).toJson();
+    // Map<String, dynamic> subscription =
+    //     Subscription(show.image!, show.title!, show.url!).toJson();
     var subdata = await FileManager().readFile();
-
     if (subdata != null) {
       try {
         subs = subdata['subscriptions'];
-        subs.add(subscription);
+        subs.add(showURL);
         Map<String, List<dynamic>> subFileFormat = {"subscriptions": subs};
         await FileManager().writeToFile(subFileFormat);
       } catch (e) {
@@ -26,7 +26,7 @@ class Subscribe with ChangeNotifier {
       }
     } else {
       try {
-        subs.add(subscription);
+        subs.add(showURL);
         Map<String, List<dynamic>> subFileFormat = {"subscriptions": subs};
         await FileManager().writeToFile(subFileFormat);
       } catch (e) {
@@ -37,14 +37,12 @@ class Subscribe with ChangeNotifier {
     notifyListeners();
   }
 
-  unsubscribe(String showTitle) async {
+  unsubscribe(String showURL) async {
     List<dynamic> subList = [];
     var subdata = await FileManager().readFile();
     subList = subdata['subscriptions'];
     for (var sub in subList) {
-      var subscription = sub as Map;
-      if (subscription['showTitle'] == showTitle) {
-        // int subIndex = subList.indexOf(sub);
+      if (sub == showURL) {
         try {
           subList.remove(sub);
           Map<String, List<dynamic>> subFileFormat = {"subscriptions": subList};
@@ -63,17 +61,17 @@ class Subscribe with ChangeNotifier {
     if (subData != null) {
       subscriptionCards.clear();
       List<dynamic> subList = subData['subscriptions'];
-      for (var subscriptionData in subList) {
-        var subscription = subscriptionData as Map;
+      for (var subscription in subList) {
+        // var subscription = Subscription.fromJson(subscriptionData);
         // print(subscription);
-        var showPic = subscription['showPic'];
-        var showTitle = subscription['showTitle'];
+        // var showPic = subscription['showPic'];
+        var showTitle = subscription.showTitle;
+        RssFeed showFeed = PodcastData().getdata(subscription);
         var subcard = ShowCard(
-          showTitle: showTitle,
-          showPic: showPic,
-          onTap: () {
-        Subscribe().unsubscribe(showTitle!);
-      },
+          showFeed: showFeed,
+          onLongPress: () {
+            Subscribe().unsubscribe(showTitle);
+          },
         );
         subscriptionCards.add(subcard);
       }

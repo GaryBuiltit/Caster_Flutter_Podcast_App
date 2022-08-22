@@ -49,11 +49,10 @@ class AudioPlayerController with ChangeNotifier {
               artUri: Uri.parse(showPic)),
         ),
       );
+      player.play();
     } catch (e) {
       print("Error loading audio source: $e");
     }
-
-    player.play();
   }
 }
 

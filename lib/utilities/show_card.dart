@@ -1,30 +1,66 @@
+import 'package:caster/providers/podcast_data.dart';
 import 'package:caster/providers/subscribe.dart';
+import 'package:caster/screens/podcast_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:podcast_search/podcast_search.dart';
+import 'package:webfeed/webfeed.dart';
 
 class ShowCard extends StatelessWidget {
-  const ShowCard({
+  ShowCard({
     Key? key,
-    this.showTitle,
-    this.showPic,
+    // required this.showTitle,
+    // required this.showPic,
+    // this.subscription,
+    // this.show,
+    this.onLongPress,
     this.onTap,
+    required this.showFeed,
   }) : super(key: key);
-  final String? showPic;
-  final String? showTitle;
-  final onTap;
 
-  picCheck(var pic){
-    if (pic != null){
+  // late final String? showPic = ;
+  // late String? showTitle = show?.title;
+  // final Podcast? show;
+  // final Map? subscription;
+  final RssFeed showFeed;
+  final onLongPress;
+  final onTap;
+  late var showPic = showFeed.image != null ? showFeed.image?.url : '';
+
+  picCheck(var pic) {
+    if (pic != null) {
       return NetworkImage(pic);
     } else {
       return const AssetImage('assets/images/image_error.jpg');
     }
   }
 
+  // inputTypeChecker(String showDetail, String subscriptionDetail) {
+  //   if (subscription == null) {
+  //     return showDetail;
+  //   } else {
+  //     return subscriptionDetail;
+  //   }
+  // }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: onTap == null
+          ? () {
+              // PodcastData().getdata(subscription!['showURL']);
+              print(showFeed.itunes!.newFeedUrl);
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: ((context) => PodcastScreen(
+                            showURL: showFeed.itunes != null
+                                ? showFeed.itunes!.newFeedUrl
+                                : '',
+                          ))));
+            }
+          : onTap,
+      onLongPress: onLongPress,
       child: SizedBox(
         height: 150,
         width: 100,
@@ -38,7 +74,7 @@ class ShowCard extends StatelessWidget {
                 fit: BoxFit.cover,
                 height: 100,
                 width: 100,
-                image: picCheck(showPic),
+                image: NetworkImage(showPic ?? ''),
               ),
             ),
             SizedBox(
@@ -46,7 +82,7 @@ class ShowCard extends StatelessWidget {
             ),
             Expanded(
               child: Text(
-                showTitle!,
+                showFeed.title ?? '',
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,

@@ -30,6 +30,7 @@ dependencies:
   audio_service: ^0.18.3
   audio_video_progress_bar: ^0.10.0
   cupertino_icons: ^1.0.2
+  flip_card: ^0.6.0
   flutter:
     sdk: flutter
   http: ^0.13.4
@@ -42,6 +43,7 @@ dependencies:
   provider: ^6.0.1
   rxdart: ^0.27.3
   sizer: ^2.0.15
+  webfeed: ^0.7.0
 
 dev_dependencies:
   flutter_lints: ^1.0.0

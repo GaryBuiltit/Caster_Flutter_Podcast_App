@@ -2,7 +2,8 @@
 
 import 'package:caster/providers/podcast_search_data_provider.dart';
 import 'package:caster/providers/subscribe.dart';
-import 'package:caster/utilities/player_controls_check.dart';
+import 'package:caster/utilities/flipcard_details.dart';
+import 'package:caster/utilities/player_controls_toggle.dart';
 import 'package:caster/utilities/track_info.dart';
 import 'package:caster/utilities/track_progress_bar.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ import 'package:caster/providers/audio_player_controller_provider.dart';
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:marquee/marquee.dart';
 import 'package:sizer/sizer.dart';
+import 'package:flip_card/flip_card.dart';
 
 class PlayScreen extends StatelessWidget {
   bool checkSearchStatus(context) {
@@ -30,7 +32,7 @@ class PlayScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.orange[800],
+          backgroundColor: Colors.orange[400],
           centerTitle: true,
           automaticallyImplyLeading: false,
           leading: IconButton(
@@ -38,7 +40,7 @@ class PlayScreen extends StatelessWidget {
             onPressed: () {
               context
                   .read<Subscribe>()
-                  .addSubscription(context.read<SearchData>().show);
+                  .addSubscription(context.read<SearchData>().showURL);
             },
           ),
           title: Text('Now Playing'),
@@ -55,17 +57,29 @@ class PlayScreen extends StatelessWidget {
                         bottom: 6.h,
                       ),
                       child: SizedBox(
-                        child: (context.watch<SearchData>().episodePic != null)
-                            ? Image(
-                                image: NetworkImage(
-                                context.watch<SearchData>().episodePic,
-                              ))
-                            : Container(
-                                margin: EdgeInsets.only(top: 45.h),
-                                width: 30.w,
-                                height: 30.h,
-                                child: CircularProgressIndicator(),
-                              ),
+                        width: 300,
+                        height: 300,
+                        child: FlipCard(
+                          fill: Fill.fillBack,
+                          front:
+                              (context.watch<SearchData>().episodePic != null)
+                                  ? Image(
+                                      fit: BoxFit.fill,
+                                      width: 300,
+                                      height: 300,
+                                      image: NetworkImage(
+                                        context.watch<SearchData>().episodePic,
+                                      ))
+                                  : Container(
+                                      margin: EdgeInsets.only(top: 45.h),
+                                      width: 30.w,
+                                      height: 30.h,
+                                      child: CircularProgressIndicator(),
+                                    ),
+                          back: (context.watch<SearchData>().episodePic != null)
+                              ? EpisodeFlipCard()
+                              : SizedBox(),
+                        ),
                       ),
                     ),
                   ),
@@ -79,3 +93,15 @@ class PlayScreen extends StatelessWidget {
     );
   }
 }
+
+// (context.watch<SearchData>().episodePic != null)
+//                             ? Image(
+//                                 image: NetworkImage(
+//                                 context.watch<SearchData>().episodePic,
+//                               ))
+//                             : Container(
+//                                 margin: EdgeInsets.only(top: 45.h),
+//                                 width: 30.w,
+//                                 height: 30.h,
+//                                 child: CircularProgressIndicator(),
+//                               ),

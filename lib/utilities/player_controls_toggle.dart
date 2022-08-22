@@ -1,24 +1,23 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 
+import 'package:caster/providers/audio_player_controller_provider.dart';
 import 'package:caster/utilities/player_controls.dart';
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 // import 'package:just_audio/just_audio.dart';
 
 class PlayerControlsToggle extends StatelessWidget {
-  const PlayerControlsToggle(
-      {Key? key, this.player, this.playerState, this.episodePic})
-      : super(key: key);
+  PlayerControlsToggle({Key? key, this.episodePic}) : super(key: key);
 
-  final player;
-  final playerState;
+  final player = AudioPlayerController().player;
+  final playerState = AudioPlayerController().player.processingState;
   final episodePic;
 
   @override
   Widget build(BuildContext context) {
     // final ProcessingState processingState = playerState!.processingState;
     return Container(
-      child: player?.playing == true
-          // || processingState == ProcessingState.ready
+      child: player.playing == true || playerState == ProcessingState.ready
           ? Row(
               children: [
                 Expanded(

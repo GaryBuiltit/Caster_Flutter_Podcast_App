@@ -8,15 +8,15 @@ class RecentTrackProvider extends ChangeNotifier {
 
   void addRecentTrack(newTrack) async {
     List<dynamic> tracks = [];
-    var recents = FileManager().readRecentsFile();
+    var recents = await FileManager().readRecentsFile();
     if (recents != null) {
       try {
-        tracks = recents['tracks'];
+        tracks = recents['recent tracks'];
         tracks.add(newTrack);
         Map<String, List<dynamic>> recentsFileFormat = {
           "recent tracks": tracks
         };
-        await FileManager().writeToFile(recentsFileFormat);
+        await FileManager().writeRecentsToFile(recentsFileFormat);
       } catch (e) {
         print('AddRecentTrackError: $e');
       }
@@ -26,7 +26,7 @@ class RecentTrackProvider extends ChangeNotifier {
         Map<String, List<dynamic>> recentsFileFormat = {
           "recent tracks": tracks
         };
-        await FileManager().writeToFile(recentsFileFormat);
+        await FileManager().writeRecentsToFile(recentsFileFormat);
       } catch (e) {
         print('error while adding recent track: $e');
       }
@@ -36,7 +36,7 @@ class RecentTrackProvider extends ChangeNotifier {
   }
 
   makeRecentCards() async {
-    var recents = await FileManager().readFile();
+    var recents = await FileManager().readRecentsFile();
     if (recents != null) {
       recentCards.clear();
       List<dynamic> recentsList = recents['recent tracks'];

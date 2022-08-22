@@ -52,7 +52,7 @@ class PlayerControls extends StatelessWidget {
           ),
           onPressed: () async {
             await Provider.of<SearchData>(context, listen: false)
-                .podcastSearch();
+                .discoverySearch();
 
             Provider.of<AudioPlayerController>(context, listen: false)
                 .initPlayer(
