@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:caster/providers/podcast_data.dart';
 import 'package:caster/utilities/episode_card.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +21,7 @@ class _PodcastScreenState extends State<PodcastScreen> {
   @override
   void initState() {
     try {
-      showData = initData();
+      showData = initData() as RssFeed;
     } catch (e) {
       print('initPodScreenError: $e');
     }
@@ -28,12 +30,13 @@ class _PodcastScreenState extends State<PodcastScreen> {
 
   RssFeed? showData;
 
-  initData() async {
+  Future<RssFeed> initData() async {
     try {
       RssFeed data = await PodcastData().getdata(widget.showURL!);
       return data;
     } catch (e) {
       print('podcastScreenDataError: $e');
+      throw Exception('podcastScreenDataError: $e');
     }
   }
 
@@ -57,6 +60,14 @@ class _PodcastScreenState extends State<PodcastScreen> {
   //     return subscriptionDetail;
   //   }
   // }
+
+  picCheck(var pic) {
+    if (pic != '') {
+      return NetworkImage(pic);
+    } else {
+      return const AssetImage('assets/images/image_error.jpg');
+    }
+  }
 
   String formatDuration(Duration duration) {
     String hours = duration.inHours.toString().padLeft(0, '2');
@@ -134,11 +145,12 @@ class _PodcastScreenState extends State<PodcastScreen> {
                             ClipRRect(
                               borderRadius: BorderRadius.circular(10),
                               child: Image(
-                                fit: BoxFit.cover,
-                                height: 17.h,
-                                width: 17.h,
-                                image: NetworkImage(showPic ?? ''),
-                              ),
+                                  fit: BoxFit.cover,
+                                  height: 17.h,
+                                  width: 17.h,
+                                  image: picCheck(showPic)
+                                  // NetworkImage(showPic ?? ''),
+                                  ),
                             ),
                             Expanded(
                               child: Padding(

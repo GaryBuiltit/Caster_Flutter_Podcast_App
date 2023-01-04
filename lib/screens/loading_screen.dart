@@ -25,6 +25,10 @@ class _LoadingScreenState extends State<LoadingScreen> {
       await context.read<SearchData>().discoverySearch(genre: widget.genre);
     }
 
+    if (widget.genre == null) {
+      await context.read<SearchData>().discoverySearch();
+    }
+
     context.read<AudioPlayerController>().initPlayer(
           episodeURL: context.read<SearchData>().episodeURL,
           episodeTitle:

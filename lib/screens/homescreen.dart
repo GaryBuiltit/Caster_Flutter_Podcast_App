@@ -27,6 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var topShowsList = context.watch<SearchData>().topShows;
     var player =
         Provider.of<AudioPlayerController>(context, listen: true).player;
     return SafeArea(
@@ -133,10 +134,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     Center(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            primary: Colors.orange[400],
+                            backgroundColor: Colors.orange[400],
                             elevation: 10,
                             padding: EdgeInsets.only(right: 10.w, left: 5.w)),
-                        onPressed: () async {
+                        onPressed: () {
                           context.read<SearchData>().currentSearch = searchText;
                           if (context.read<SearchData>().searchType ==
                               'search') {
@@ -156,6 +157,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                 builder: (context) => LoadingScreen(),
                               ),
                             );
+                            // Future.delayed(Duration.zero, () {
+                            //   Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //       builder: (context) => LoadingScreen(),
+                            //     ),
+                            //   );
+                            // });
                           }
                         },
                         child: Padding(
@@ -191,15 +200,21 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.only(top: 15),
-                height: 175,
-                // width: MediaQuery.of(context).size.width,
-                child: ListView(
-                  padding: EdgeInsets.symmetric(horizontal: 5),
-                  scrollDirection: Axis.horizontal,
-                  children: context.watch<SearchData>().topShows,
-                ),
-              ),
+                  padding: EdgeInsets.only(top: 15),
+                  height: 175,
+                  // width: MediaQuery.of(context).size.width,
+                  child: ListView.builder(
+                      itemCount: topShowsList.length,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        return topShowsList[index];
+                      })
+                  // ListView(
+                  //   padding: EdgeInsets.symmetric(horizontal: 5),
+                  //   scrollDirection: Axis.horizontal,
+                  //   children: context.watch<SearchData>().topShows,
+                  // ),
+                  ),
               // ****************** Genres Section ********************
               Text(
                 'Explore by Genre',

@@ -1,7 +1,7 @@
 // import 'package:caster/screens/episode_screen.dart';
 import 'package:caster/screens/podcast_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:podcast_search/podcast_search.dart';
+// import 'package:podcast_search/podcast_search.dart';
 // import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:webfeed/webfeed.dart';
@@ -18,6 +18,14 @@ class ResultCard extends StatelessWidget {
   // late String? showHost = show.;
   // String episodeTitle;
   late final String? showDescription = showFeed.description;
+
+  picCheck(var pic) {
+    if (pic != '') {
+      return NetworkImage(pic);
+    } else {
+      return const AssetImage('assets/images/image_error.jpg');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +58,8 @@ class ResultCard extends StatelessWidget {
                             fit: BoxFit.cover,
                             height: 13.h,
                             width: 13.h,
-                            image: NetworkImage(showImage ?? ''),
+                            image: picCheck(showImage),
+                            // NetworkImage(showImage ?? ''),
                           ),
                         ),
                         Expanded(

@@ -22,7 +22,8 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => SearchData()),
+        ChangeNotifierProvider.value(value: SearchData()),
+        // ChangeNotifierProvider(create: (_) => SearchData()),
         ChangeNotifierProvider(create: (_) => AudioPlayerController()),
         ChangeNotifierProvider(create: (_) => Subscribe()),
         ChangeNotifierProvider(create: (_) => RecentTrackProvider()),
@@ -53,6 +54,7 @@ class MyApp extends StatelessWidget {
           routes: {
             '/': (context) => MainNav(),
             '/searchResultsScreen': (context) => SearchResultsScreen(),
+            // ignore: missing_required_param
             '/podcastScreen': (context) => PodcastScreen(),
             '/episodeScreen': (context) => EpisodeScreen(),
           },

@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_if_null_operators
+
 import 'package:caster/providers/podcast_data.dart';
 import 'package:caster/providers/subscribe.dart';
 import 'package:caster/screens/podcast_screen.dart';
@@ -28,7 +30,7 @@ class ShowCard extends StatelessWidget {
   late var showPic = showFeed.image != null ? showFeed.image?.url : '';
 
   picCheck(var pic) {
-    if (pic != null) {
+    if (pic != '') {
       return NetworkImage(pic);
     } else {
       return const AssetImage('assets/images/image_error.jpg');
@@ -49,7 +51,7 @@ class ShowCard extends StatelessWidget {
       onTap: onTap == null
           ? () {
               // PodcastData().getdata(subscription!['showURL']);
-              print(showFeed.itunes!.newFeedUrl);
+              // print(showFeed.itunes!.newFeedUrl);
               Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -74,7 +76,8 @@ class ShowCard extends StatelessWidget {
                 fit: BoxFit.cover,
                 height: 100,
                 width: 100,
-                image: NetworkImage(showPic ?? ''),
+                image: picCheck(showPic),
+                // NetworkImage(showPic ?? ''),
               ),
             ),
             SizedBox(

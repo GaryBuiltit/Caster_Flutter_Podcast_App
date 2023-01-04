@@ -23,9 +23,9 @@ class SearchData with ChangeNotifier {
   int searchLimit = 20;
 
   // final List<String> _recentSearches = [];
-  final List<Widget> topShows = [];
   List<Widget> keywordResults = [];
   List<Widget> keywordResultsEpisodes = [];
+  List<Widget> topShows = [];
 
   late Podcast show;
   var currentSearch;
@@ -52,8 +52,8 @@ class SearchData with ChangeNotifier {
         var genreBlock = GestureDetector(
           onTap: () {
             if (searchType == 'search') {
-              currentSearch = genre;
-              keywordSearch(context);
+              // currentSearch = genre;
+              keywordSearch(context, genre: genre);
               Navigator.pushNamed(context, SearchResultsScreen.id);
             }
             if (searchType == 'discovery') {
@@ -97,7 +97,6 @@ class SearchData with ChangeNotifier {
 
   getPopular() async {
     var search = Search();
-
     var charts = await search.charts(country: Country.UNITED_STATES, limit: 20);
     topShows.clear();
     for (var result in charts.items) {
@@ -116,8 +115,8 @@ class SearchData with ChangeNotifier {
       } catch (e) {
         print('PopularShowsError: $e');
       }
+      notifyListeners();
     }
-    notifyListeners();
   }
 
 // *************function to perform discovery mode search***************
@@ -142,6 +141,7 @@ class SearchData with ChangeNotifier {
       int episodePicked = Random().nextInt(show.episodes!.length);
 
       showTitle = await show.title;
+      print(showTitle);
       episodeTitle = await show.episodes?[episodePicked].title;
       episodePic = await show.episodes?[episodePicked].imageUrl;
       episodeURL = await show.episodes?[episodePicked].contentUrl;
@@ -151,8 +151,8 @@ class SearchData with ChangeNotifier {
       showFeed = PodcastData().getdata(show.url!);
       showURL = show.url;
 
-      var newTrack = RecentTrack(episodePic, showTitle, episodeTitle).toJson();
-      RecentTrackProvider().addRecentTrack(newTrack);
+      // var newTrack = RecentTrack(episodePic, showTitle, episodeTitle).toJson();
+      // RecentTrackProvider().addRecentTrack(newTrack);
 
       notifyListeners();
     }
@@ -190,10 +190,10 @@ class SearchData with ChangeNotifier {
       showFeed = PodcastData().getdata(show.url!);
       showURL = show.url;
 
-      var newTrack = await RecentTrack(
-              await episodePic, await showTitle, await episodeTitle)
-          .toJson();
-      RecentTrackProvider().addRecentTrack(newTrack);
+      // var newTrack = await RecentTrack(
+      //         await episodePic, await showTitle, await episodeTitle)
+      //     .toJson();
+      // RecentTrackProvider().addRecentTrack(newTrack);
 
       notifyListeners();
     }
@@ -209,7 +209,7 @@ class SearchData with ChangeNotifier {
     // _____________search by typed keyword if genre is not provided___________
     if (genre == null) {
       SearchResult results = await search.search(currentSearch,
-          country: Country.UNITED_STATES, limit: 100);
+          country: Country.UNITED_STATES, limit: 200);
 
       for (var result in results.items) {
         try {
@@ -222,6 +222,11 @@ class SearchData with ChangeNotifier {
         var showFeed = await PodcastData().getdata(show!.url ?? '');
         var showResult = ResultCard(showFeed: showFeed);
         keywordResults.add(showResult);
+
+        if (searching == true) {
+          searching = false;
+        }
+        notifyListeners();
       }
     }
 
@@ -230,27 +235,33 @@ class SearchData with ChangeNotifier {
       SearchResult results = await search.search(
         genre,
         country: Country.UNITED_STATES,
-        limit: 100,
+        limit: 200,
         attribute: Attribute.GENRE_TERM,
       );
-
+      // print(results.items);
       for (var result in results.items) {
         try {
           show = await Podcast.loadFeed(
             url: result.feedUrl.toString(),
           );
+          // print(show.title);
         } catch (e) {
           print("Error setting variable show: $e");
         }
-        var showFeed = PodcastData().getdata(show!.url ?? '');
+        var showFeed = await PodcastData().getdata(show!.url ?? '');
         var showResult = ResultCard(showFeed: showFeed);
         keywordResults.add(showResult);
+
+        if (searching == true) {
+          searching = false;
+        }
+        notifyListeners();
       }
     }
-    if (searching == true) {
-      searching = false;
-    }
-    notifyListeners();
+    // if (searching == true) {
+    //   searching = false;
+    // }
+    // notifyListeners();
   }
 
 // **********function to generate episode results for keyword search in search mode************

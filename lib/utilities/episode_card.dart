@@ -87,7 +87,7 @@ class EpisodeCard extends StatelessWidget {
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                primary: Colors.grey[100],
+                backgroundColor: Colors.grey[100],
                 fixedSize: Size(34.w, 4.h),
                 shape: const RoundedRectangleBorder(
                   side: BorderSide(),

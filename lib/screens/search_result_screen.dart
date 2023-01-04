@@ -24,6 +24,8 @@ class SearchResultsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var resultList =
+        Provider.of<SearchData>(context, listen: true).keywordResults;
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.grey[100],
@@ -58,11 +60,17 @@ class SearchResultsScreen extends StatelessWidget {
                     ),
                   ),
                   Expanded(
-                    child: ListView(
-                        shrinkWrap: true,
-                        // padding: const EdgeInsets.only(left: 10, top: 10),
-                        children: context.watch<SearchData>().keywordResults),
-                  ),
+                      child: ListView.builder(
+                          itemCount: resultList.length,
+                          itemBuilder: (context, index) {
+                            return resultList[index];
+                          })
+                      // ListView(
+                      //     shrinkWrap: true,
+                      //     // padding: const EdgeInsets.only(left: 10, top: 10),
+                      //     children: Provider.of<SearchData>(context, listen: true)
+                      //         .keywordResults),
+                      ),
                   //     const Divider(
                   //       color: Colors.grey,
                   //     ),
