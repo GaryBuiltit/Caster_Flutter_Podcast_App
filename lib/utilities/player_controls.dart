@@ -26,10 +26,16 @@ class PlayerControls extends StatelessWidget {
                   Icons.replay_30_rounded,
                 ),
                 onPressed: () {
-                  Provider.of<AudioPlayerController>(context, listen: false)
-                      .player
-                      .seek(
-                          Duration(seconds: duration!.position.inSeconds - 30));
+                  if (duration!.position.inSeconds <= 30) {
+                    Provider.of<AudioPlayerController>(context, listen: false)
+                        .player
+                        .seek(Duration(seconds: 0));
+                  } else {
+                    Provider.of<AudioPlayerController>(context, listen: false)
+                        .player
+                        .seek(Duration(
+                            seconds: duration.position.inSeconds - 30));
+                  }
                 },
               );
             }),

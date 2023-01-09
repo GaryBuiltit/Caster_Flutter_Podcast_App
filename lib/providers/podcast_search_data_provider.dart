@@ -4,6 +4,7 @@
 import 'dart:convert';
 import 'dart:math';
 import 'package:caster/models/recent_track.dart';
+import 'package:caster/providers/audio_player_controller_provider.dart';
 import 'package:caster/providers/podcast_data.dart';
 import 'package:caster/providers/recent_tracks_provider.dart';
 import 'package:caster/screens/loading_screen.dart';
@@ -42,7 +43,26 @@ class SearchData with ChangeNotifier {
   var episodeDescription;
   var showURL;
 
-// *********Function to get genres ad generate genre cards for homescreen*********
+  normalPlayVariableSet(
+      {showTitle,
+      showPic,
+      episodeTitle,
+      episodePic,
+      episodeURL,
+      episodeLen,
+      episodeDescription,
+      showURL}) {
+    this.showTitle = showTitle;
+    this.episodeDescription = episodeDescription;
+    this.showPic = showPic;
+    this.episodeTitle = episodeTitle;
+    this.episodePic = episodePic;
+    this.episodeLen = episodeLen;
+    this.showURL = showURL;
+    this.episodeURL = episodeURL;
+  }
+
+// *********Function to get genres and generate genre cards for homescreen*********
   getGenres(context) {
     List<Widget> genreBlocks = [];
     var search = Search();
@@ -57,6 +77,8 @@ class SearchData with ChangeNotifier {
               Navigator.pushNamed(context, SearchResultsScreen.id);
             }
             if (searchType == 'discovery') {
+              Provider.of<AudioPlayerController>(context, listen: false)
+                  .playType = 'discovery';
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -109,6 +131,7 @@ class SearchData with ChangeNotifier {
           padding: EdgeInsets.only(right: 15),
           child: ShowCard(
             showFeed: showData,
+            showURL: result.feedUrl.toString(),
           ),
         );
         topShows.add(card);
@@ -188,7 +211,7 @@ class SearchData with ChangeNotifier {
       episodeDescription = await show.episodes?[episodePicked].description;
       showPic = await show.image;
       showFeed = PodcastData().getdata(show.url!);
-      showURL = show.url;
+      showURL = results.items[showPicked].feedUrl.toString();
 
       // var newTrack = await RecentTrack(
       //         await episodePic, await showTitle, await episodeTitle)
@@ -220,7 +243,10 @@ class SearchData with ChangeNotifier {
           print("Error setting variable show: $e");
         }
         var showFeed = await PodcastData().getdata(show!.url ?? '');
-        var showResult = ResultCard(showFeed: showFeed);
+        var showResult = ResultCard(
+          showFeed: showFeed,
+          showURL: result.feedUrl.toString(),
+        );
         keywordResults.add(showResult);
 
         if (searching == true) {
@@ -238,18 +264,19 @@ class SearchData with ChangeNotifier {
         limit: 200,
         attribute: Attribute.GENRE_TERM,
       );
-      // print(results.items);
       for (var result in results.items) {
         try {
           show = await Podcast.loadFeed(
             url: result.feedUrl.toString(),
           );
-          // print(show.title);
         } catch (e) {
           print("Error setting variable show: $e");
         }
         var showFeed = await PodcastData().getdata(show!.url ?? '');
-        var showResult = ResultCard(showFeed: showFeed);
+        var showResult = ResultCard(
+          showFeed: showFeed,
+          showURL: result.feedUrl.toString(),
+        );
         keywordResults.add(showResult);
 
         if (searching == true) {

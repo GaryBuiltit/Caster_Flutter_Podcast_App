@@ -1,16 +1,14 @@
 // ignore_for_file: avoid_print
 
-import 'package:caster/providers/podcast_data.dart';
 import 'package:caster/utilities/episode_card.dart';
 import 'package:flutter/material.dart';
-// import 'package:podcast_search/podcast_search.dart';
+import 'package:podcast_search/podcast_search.dart';
 import 'package:sizer/sizer.dart';
-import 'package:webfeed/webfeed.dart';
+import 'package:async/async.dart';
 
 class PodcastScreen extends StatefulWidget {
   const PodcastScreen({Key? key, @required this.showURL}) : super(key: key);
   static String id = '/podcastScreen';
-  // final RssFeed? showData;
   final String? showURL;
 
   @override
@@ -18,49 +16,30 @@ class PodcastScreen extends StatefulWidget {
 }
 
 class _PodcastScreenState extends State<PodcastScreen> {
-  @override
-  void initState() {
-    try {
-      showData = initData() as RssFeed;
-    } catch (e) {
-      print('initPodScreenError: $e');
-    }
-    super.initState();
-  }
-
-  RssFeed? showData;
-
-  Future<RssFeed> initData() async {
-    try {
-      RssFeed data = await PodcastData().getdata(widget.showURL!);
-      return data;
-    } catch (e) {
-      print('podcastScreenDataError: $e');
-      throw Exception('podcastScreenDataError: $e');
-    }
-  }
-
-  // late Podcast show = widget.show!;
-
   bool moreText = false;
   int maxLines = 4;
+  String? showPic;
+  String? showTitle;
+  List<Episode>? episodes;
+  String? showDescription;
+  String? episodeCount;
 
-  late String? showPic = showData != null ? showData?.image?.url : '';
-  late String? showTitle = showData != null ? showData?.title : '';
-  late List? episodes = showData != null ? showData?.items : [];
-  late String? showHost = showData != null ? showData?.itunes?.author : '';
-  late String? showDescription = showData != null ? showData?.description : '';
-  late String? episodeCount =
-      showData != null ? showData?.items?.length.toString() : '';
+  final AsyncMemoizer _memoizer = AsyncMemoizer();
 
-  // inputTypeChecker(var showDetail, var subscriptionDetail) {
-  //   if (widget.show == null) {
-  //     return showDetail;
-  //   } else {
-  //     return subscriptionDetail;
-  //   }
-  // }
+// funcion to fetch podcast data which is ran in initstate
+  initData() async {
+    return _memoizer.runOnce(() async {
+      try {
+        var feedData = await Podcast.loadFeed(url: widget.showURL!.toString());
+        return feedData;
+      } catch (e) {
+        print('podcastScreenDataError: $e');
+        // throw Exception('podcastScreenDataError: $e');
+      }
+    });
+  }
 
+// funtion to check if show image link provided is null or not
   picCheck(var pic) {
     if (pic != '') {
       return NetworkImage(pic);
@@ -69,6 +48,7 @@ class _PodcastScreenState extends State<PodcastScreen> {
     }
   }
 
+// funtion to format how the episode lengths are displayed
   String formatDuration(Duration duration) {
     String hours = duration.inHours.toString().padLeft(0, '2');
     String minutes =
@@ -78,28 +58,35 @@ class _PodcastScreenState extends State<PodcastScreen> {
     return "$hours:$minutes:$seconds";
   }
 
+// function to parse episode and put them in a list
   List<Widget> getEpisodes() {
     List<Widget> episodeList = [];
-    for (var episode in showData?.items ?? []) {
-      var episodeCard = EpisodeCard(
-        episodeImage: episode.itunes!.image?.href,
-        showTitle: showTitle ?? '',
-        showImage: showPic ?? '',
-        episodeTitle: episode.title ?? '',
-        episodeDescription: episode.description ?? '',
-        episodeURL: episode.media!.contents![0].url ?? '',
-        episodeLen: formatDuration(episode.itunes!.duration ??
-            const Duration(
-              hours: 0,
-              minutes: 0,
-              seconds: 0,
-            )),
-      );
-      episodeList.add(episodeCard);
+    for (Episode episode in episodes ?? []) {
+      try {
+        var episodeCard = EpisodeCard(
+          showURL: widget.showURL.toString(),
+          episodeImage: episode.imageUrl,
+          showTitle: showTitle.toString(),
+          showImage: showPic.toString(),
+          episodeTitle: episode.title,
+          episodeDescription: episode.description,
+          episodeURL: episode.contentUrl!,
+          episodeLen: formatDuration(episode.duration ??
+              const Duration(
+                hours: 0,
+                minutes: 0,
+                seconds: 0,
+              )),
+        );
+        episodeList.add(episodeCard);
+      } catch (e) {
+        print("Error creating episode card: $e");
+      }
     }
     return episodeList;
   }
 
+// function to toggle between show description summary and full description
   toggleDescription() {
     if (moreText == false) {
       setState(() {
@@ -116,106 +103,145 @@ class _PodcastScreenState extends State<PodcastScreen> {
   }
 
   @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      try {
+        await initData().then((value) {
+          setState(() {
+            showPic = value.image ?? '';
+            showTitle = value.title ?? '';
+            showDescription = value.description ?? '';
+            episodes = value.episodes ?? [];
+            episodeCount =
+                value.episodes != null ? value.episodes?.length.toString() : '';
+          });
+        });
+      } catch (e) {
+        print('initPodScreenError: $e');
+      }
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.grey[100],
         appBar: AppBar(
-          // automaticallyImplyLeading: false,
           elevation: 0,
           foregroundColor: Colors.black,
           backgroundColor: Colors.grey[100],
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                  ),
+        body: FutureBuilder(
+          future: initData(),
+          builder: ((context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.hasData) {
+                return SingleChildScrollView(
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: EdgeInsets.only(bottom: 3.h),
-                        child: Row(
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: Image(
-                                  fit: BoxFit.cover,
-                                  height: 17.h,
-                                  width: 17.h,
-                                  image: picCheck(showPic)
-                                  // NetworkImage(showPic ?? ''),
-                                  ),
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding: EdgeInsets.only(left: 2.w),
-                                child: Text(
-                                  showTitle!,
-                                  maxLines: 2,
-                                  softWrap: true,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.bold,
+                      SizedBox(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(bottom: 3.h),
+                                child: SizedBox(
+                                  height: 21.h,
+                                  child: Column(
+                                    children: [
+                                      Center(
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          child: Image(
+                                              fit: BoxFit.cover,
+                                              height: 17.h,
+                                              width: 17.h,
+                                              image: picCheck(showPic)
+                                              // NetworkImage    (showPic ?? ''),
+                                              ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Padding(
+                                          padding: EdgeInsets.only(left: 2.w),
+                                          child: Text(
+                                            showTitle!,
+                                            maxLines: 2,
+                                            softWrap: true,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              fontSize: 14.sp,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
+                              Text(
+                                showDescription.toString(),
+                                maxLines: moreText == true ? null : maxLines,
+                                softWrap: true,
+                                overflow: moreText == true
+                                    ? null
+                                    : TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                      Text(
-                        showDescription!,
-                        maxLines: moreText == true ? null : maxLines,
-                        softWrap: true,
-                        overflow:
-                            moreText == true ? null : TextOverflow.ellipsis,
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          onPressed: () {
+                            toggleDescription();
+                          },
+                          child: Text(
+                            moreText == false ? 'More' : 'Less',
+                            style: const TextStyle(
+                              color: Colors.blue,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 3.w),
+                          child: Text(
+                            '$episodeCount episodes',
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              fontSize: 13.sp,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const Divider(
+                        color: Colors.grey,
+                      ),
+                      Column(
+                        children: getEpisodes(),
                       ),
                     ],
                   ),
-                ),
-              ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                  onPressed: () {
-                    toggleDescription();
-                  },
-                  child: Text(
-                    moreText == false ? 'More' : 'Less',
-                    style: const TextStyle(
-                      color: Colors.blue,
-                    ),
-                  ),
-                ),
-              ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: EdgeInsets.only(left: 3.w),
-                  child: Text(
-                    '$episodeCount episodes',
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      fontSize: 13.sp,
-                    ),
-                  ),
-                ),
-              ),
-              const Divider(
-                color: Colors.grey,
-              ),
-              Column(
-                children: getEpisodes(),
-              ),
-            ],
-          ),
+                );
+              }
+            }
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }),
         ),
       ),
     );

@@ -10,7 +10,7 @@ import 'package:loading_indicator/loading_indicator.dart';
 import 'package:provider/provider.dart';
 
 class LoadingScreen extends StatefulWidget {
-  LoadingScreen({this.genre});
+  const LoadingScreen({this.genre});
   final genre;
 
   @override
@@ -18,36 +18,62 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
-  var searchType;
+  // var searchType;
 
   void showData() async {
-    if (widget.genre != null) {
-      await context.read<SearchData>().discoverySearch(genre: widget.genre);
-    }
+    if (Provider.of<AudioPlayerController>(context, listen: false).playType ==
+        'discovery') {
+      if (widget.genre != null) {
+        await context.read<SearchData>().discoverySearch(genre: widget.genre);
+      }
 
-    if (widget.genre == null) {
-      await context.read<SearchData>().discoverySearch();
-    }
+      if (widget.genre == null) {
+        await context.read<SearchData>().discoverySearch();
+      }
 
-    context.read<AudioPlayerController>().initPlayer(
-          episodeURL: context.read<SearchData>().episodeURL,
-          episodeTitle:
-              Provider.of<SearchData>(context, listen: false).episodeTitle,
-          showTitle: Provider.of<SearchData>(context, listen: false).showTitle,
-          showPic: Provider.of<SearchData>(context, listen: false).showPic,
-        );
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) {
-          return MainNav(
-            startIndex: 2,
+      context.read<AudioPlayerController>().initPlayer(
+            episodeURL: context.read<SearchData>().episodeURL,
+            episodeTitle:
+                Provider.of<SearchData>(context, listen: false).episodeTitle,
+            showTitle:
+                Provider.of<SearchData>(context, listen: false).showTitle,
+            showPic: Provider.of<SearchData>(context, listen: false).showPic,
           );
-        },
-      ),
-    );
 
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return MainNav(
+              startIndex: 2,
+            );
+          },
+        ),
+      );
+    }
+
+    if (Provider.of<AudioPlayerController>(context, listen: false).playType ==
+        'normal') {
+      context.read<AudioPlayerController>().initPlayer(
+            episodeURL: context.read<SearchData>().episodeURL,
+            episodeTitle:
+                Provider.of<SearchData>(context, listen: false).episodeTitle,
+            showTitle:
+                Provider.of<SearchData>(context, listen: false).showTitle,
+            showPic: Provider.of<SearchData>(context, listen: false).showPic,
+          );
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return MainNav(
+              startIndex: 2,
+            );
+          },
+        ),
+      );
+    }
     // if (searchType == 'search') {
     //   Navigator.pushNamed(context, SearchResultsScreen.id);
     // }
@@ -56,7 +82,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   @override
   void initState() {
     super.initState();
-    searchType = context.read<SearchData>().searchType;
+    // searchType = context.read<SearchData>().searchType;
     showData();
   }
 

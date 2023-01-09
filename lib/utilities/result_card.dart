@@ -1,8 +1,5 @@
-// import 'package:caster/screens/episode_screen.dart';
 import 'package:caster/screens/podcast_screen.dart';
 import 'package:flutter/material.dart';
-// import 'package:podcast_search/podcast_search.dart';
-// import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:webfeed/webfeed.dart';
 
@@ -11,13 +8,14 @@ class ResultCard extends StatelessWidget {
   ResultCard({
     Key? key,
     required this.showFeed,
+    required this.showURL,
   }) : super(key: key);
   final RssFeed showFeed;
-  late final String? showImage = showFeed.image!.url;
-  late final String? showTitle = showFeed.title;
-  // late String? showHost = show.;
-  // String episodeTitle;
-  late final String? showDescription = showFeed.description;
+  final String showURL;
+  late final String? showImage =
+      showFeed.image != null ? showFeed.image!.url : '';
+  late final String? showTitle = showFeed.title ?? '';
+  late final String? showDescription = showFeed.description ?? '';
 
   picCheck(var pic) {
     if (pic != '') {
@@ -41,7 +39,7 @@ class ResultCard extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: ((context) => PodcastScreen(
-                              showURL: showFeed.itunes?.newFeedUrl,
+                              showURL: showURL,
                             ))));
               },
               child: Column(
@@ -50,7 +48,6 @@ class ResultCard extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.only(bottom: .8.h),
                     child: Row(
-                      // mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(10),
@@ -59,7 +56,6 @@ class ResultCard extends StatelessWidget {
                             height: 13.h,
                             width: 13.h,
                             image: picCheck(showImage),
-                            // NetworkImage(showImage ?? ''),
                           ),
                         ),
                         Expanded(

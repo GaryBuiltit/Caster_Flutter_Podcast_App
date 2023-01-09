@@ -64,29 +64,7 @@ class SearchResultsScreen extends StatelessWidget {
                           itemCount: resultList.length,
                           itemBuilder: (context, index) {
                             return resultList[index];
-                          })
-                      // ListView(
-                      //     shrinkWrap: true,
-                      //     // padding: const EdgeInsets.only(left: 10, top: 10),
-                      //     children: Provider.of<SearchData>(context, listen: true)
-                      //         .keywordResults),
-                      ),
-                  //     const Divider(
-                  //       color: Colors.grey,
-                  //     ),
-                  //     Padding(
-                  //       padding: const EdgeInsets.only(bottom: 10),
-                  //       child: Text(
-                  //         'Episode Results',
-                  //         style: TextStyle(
-                  //           fontSize: 12.sp,
-                  //           fontWeight: FontWeight.bold,
-                  //         ),
-                  //       ),
-                  //     ),
-                  //     Column(
-                  //         children:
-                  //             context.watch<SearchData>().keywordResultsEpisodes),
+                          })),
                 ],
               )
             : const Center(

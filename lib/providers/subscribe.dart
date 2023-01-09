@@ -66,9 +66,11 @@ class Subscribe with ChangeNotifier {
         // print(subscription);
         // var showPic = subscription['showPic'];
         var showTitle = subscription.showTitle;
+        var showURL = subscription.showURL;
         RssFeed showFeed = PodcastData().getdata(subscription);
         var subcard = ShowCard(
           showFeed: showFeed,
+          showURL: showURL,
           onLongPress: () {
             Subscribe().unsubscribe(showTitle);
           },

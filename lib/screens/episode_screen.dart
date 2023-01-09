@@ -1,4 +1,4 @@
-import 'package:caster/screens/podcast_screen.dart';
+// import 'package:caster/screens/podcast_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -16,6 +16,15 @@ class EpisodeScreen extends StatelessWidget {
   final String? showTitle;
   // final String? showHost;
   final String? episodeDescription;
+
+  // funtion to check if show image link provided is null or not
+  picCheck(pic) {
+    if (pic != '') {
+      return NetworkImage(pic);
+    } else {
+      return const AssetImage('assets/images/image_error.jpg');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +58,7 @@ class EpisodeScreen extends StatelessWidget {
                                 fit: BoxFit.cover,
                                 height: 17.h,
                                 width: 17.h,
-                                image: NetworkImage(episodePic ?? ''),
+                                image: picCheck(episodePic),
                               ),
                             ),
                             Expanded(

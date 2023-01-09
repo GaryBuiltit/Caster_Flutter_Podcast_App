@@ -45,7 +45,8 @@ class PlayScreen extends StatelessWidget {
           ),
           title: Text('Now Playing'),
         ),
-        body: checkSearchStatus(context) == true
+        body: checkSearchStatus(context) == true ||
+                context.read<AudioPlayerController>().playType == 'normal'
             ? Column(
                 children: [
                   Expanded(
@@ -93,15 +94,3 @@ class PlayScreen extends StatelessWidget {
     );
   }
 }
-
-// (context.watch<SearchData>().episodePic != null)
-//                             ? Image(
-//                                 image: NetworkImage(
-//                                 context.watch<SearchData>().episodePic,
-//                               ))
-//                             : Container(
-//                                 margin: EdgeInsets.only(top: 45.h),
-//                                 width: 30.w,
-//                                 height: 30.h,
-//                                 child: CircularProgressIndicator(),
-//                               ),

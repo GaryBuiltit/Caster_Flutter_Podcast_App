@@ -151,6 +151,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             if (player.playing) {
                               player.stop();
                             }
+                            context.read<AudioPlayerController>().playType =
+                                'discovery';
+
                             Navigator.push(
                               context,
                               MaterialPageRoute(

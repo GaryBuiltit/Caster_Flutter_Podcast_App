@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_if_null_operators
+// ignore_for_file: prefer_if_null_operators, prefer_typing_uninitialized_variables
 
 import 'package:caster/providers/podcast_data.dart';
 import 'package:caster/providers/subscribe.dart';
@@ -18,12 +18,14 @@ class ShowCard extends StatelessWidget {
     this.onLongPress,
     this.onTap,
     required this.showFeed,
+    required this.showURL,
   }) : super(key: key);
 
   // late final String? showPic = ;
   // late String? showTitle = show?.title;
   // final Podcast? show;
   // final Map? subscription;
+  final String showURL;
   final RssFeed showFeed;
   final onLongPress;
   final onTap;
@@ -51,14 +53,11 @@ class ShowCard extends StatelessWidget {
       onTap: onTap == null
           ? () {
               // PodcastData().getdata(subscription!['showURL']);
-              // print(showFeed.itunes!.newFeedUrl);
               Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: ((context) => PodcastScreen(
-                            showURL: showFeed.itunes != null
-                                ? showFeed.itunes!.newFeedUrl
-                                : '',
+                            showURL: showURL,
                           ))));
             }
           : onTap,

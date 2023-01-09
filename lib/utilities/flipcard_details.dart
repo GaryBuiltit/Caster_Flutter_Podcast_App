@@ -2,7 +2,7 @@ import 'package:caster/providers/podcast_search_data_provider.dart';
 import 'package:caster/screens/episode_screen.dart';
 import 'package:caster/screens/podcast_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:podcast_search/podcast_search.dart';
+// import 'package:podcast_search/podcast_search.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
@@ -55,13 +55,13 @@ class EpisodeFlipCard extends StatelessWidget {
                           TextButton(
                             onPressed: () {
                               Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: ((context) => PodcastScreen(
-                                          // show: context
-                                          //     .watch<SearchData>()
-                                          //     .show
-                                          ))));
+                                context,
+                                MaterialPageRoute(
+                                  builder: ((context) => PodcastScreen(
+                                      showURL:
+                                          context.watch<SearchData>().showURL)),
+                                ),
+                              );
                             },
                             child: const Text('View Show'),
                           ),

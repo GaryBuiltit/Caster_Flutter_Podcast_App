@@ -1,7 +1,11 @@
+import 'package:caster/providers/audio_player_controller_provider.dart';
 import 'package:caster/screens/episode_screen.dart';
+import 'package:caster/screens/loading_screen.dart';
+import 'package:caster/screens/main_nav.dart';
 import 'package:flutter/material.dart';
-// import 'package:provider/provider.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import 'package:caster/providers/podcast_search_data_provider.dart';
 
 class EpisodeCard extends StatelessWidget {
   static String id = '/podcastSreen';
@@ -14,6 +18,7 @@ class EpisodeCard extends StatelessWidget {
     required this.episodeDescription,
     required this.episodeURL,
     required this.episodeLen,
+    required this.showURL,
   }) : super(key: key);
   final String? episodeImage;
   final String showTitle;
@@ -22,6 +27,7 @@ class EpisodeCard extends StatelessWidget {
   final String episodeDescription;
   final String episodeURL;
   final String episodeLen;
+  final String showURL;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +43,7 @@ class EpisodeCard extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: ((context) => EpisodeScreen(
-                              episodePic: episodeImage,
+                              episodePic: episodeImage ?? showImage,
                               episodeTitle: episodeTitle,
                               episodeDescription: episodeDescription,
                             ))));
@@ -96,7 +102,48 @@ class EpisodeCard extends StatelessWidget {
                   ),
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+                context.read<AudioPlayerController>().playType = 'normal';
+
+                context.read<SearchData>().normalPlayVariableSet(
+                    showTitle: showTitle,
+                    showPic: showImage,
+                    episodeTitle: episodeTitle,
+                    episodePic: episodeImage ?? showImage,
+                    episodeURL: episodeURL,
+                    episodeLen: episodeLen,
+                    episodeDescription: episodeDescription,
+                    showURL: showURL);
+
+                context.read<AudioPlayerController>().initPlayer(
+                      episodeURL: context.read<SearchData>().episodeURL,
+                      episodeTitle:
+                          Provider.of<SearchData>(context, listen: false)
+                              .episodeTitle,
+                      showTitle: Provider.of<SearchData>(context, listen: false)
+                          .showTitle,
+                      showPic: Provider.of<SearchData>(context, listen: false)
+                          .showPic,
+                    );
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return const MainNav(
+                        startIndex: 2,
+                      );
+                    },
+                  ),
+                );
+
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => LoadingScreen(),
+                //   ),
+                // );
+              },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [

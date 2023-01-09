@@ -13,6 +13,7 @@ import 'package:just_audio_background/just_audio_background.dart';
 class AudioPlayerController with ChangeNotifier {
   var trackID = 0;
   var player = AudioPlayer();
+  var playType;
   // var episodeTitle;
   // var showTitle;
   // var showPic;
