@@ -3,6 +3,7 @@
 import 'package:caster/providers/recent_tracks_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sizer/sizer.dart';
 
 class RecentlyPlayedScreen extends StatefulWidget {
   const RecentlyPlayedScreen({Key? key}) : super(key: key);
@@ -17,7 +18,7 @@ class _RecentlyPlayedScreenState extends State<RecentlyPlayedScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.orange[800],
+          backgroundColor: Colors.orange[400],
           centerTitle: true,
           automaticallyImplyLeading: false,
           title: Text('Recently played Episodes'),
@@ -26,9 +27,12 @@ class _RecentlyPlayedScreenState extends State<RecentlyPlayedScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
-              child: ListView(
-                  children: context.watch<RecentTrackProvider>().recentCards),
-              // Provider.of<RecentTrackProvider>(context).recentCards),
+              child: ListView.builder(
+                  padding: EdgeInsets.only(top: 2.h),
+                  itemCount:
+                      context.watch<RecentTrackProvider>().recentCards.length,
+                  itemBuilder: (context, index) =>
+                      context.watch<RecentTrackProvider>().recentCards[index]),
             ),
           ],
         ),

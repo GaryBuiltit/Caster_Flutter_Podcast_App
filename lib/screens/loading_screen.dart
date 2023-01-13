@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, must_be_immutable, prefer_typing_uninitialized_variables, use_key_in_widget_constructors, unused_import
 
+import 'package:caster/providers/recent_tracks_provider.dart';
 import 'package:caster/screens/main_nav.dart';
 import 'package:caster/screens/play_screen.dart';
 import 'package:caster/providers/podcast_search_data_provider.dart';
@@ -21,6 +22,8 @@ class _LoadingScreenState extends State<LoadingScreen> {
   // var searchType;
 
   void showData() async {
+    var searchData = Provider.of<SearchData>(context, listen: false);
+
     if (Provider.of<AudioPlayerController>(context, listen: false).playType ==
         'discovery') {
       if (widget.genre != null) {
@@ -32,13 +35,22 @@ class _LoadingScreenState extends State<LoadingScreen> {
       }
 
       context.read<AudioPlayerController>().initPlayer(
-            episodeURL: context.read<SearchData>().episodeURL,
-            episodeTitle:
-                Provider.of<SearchData>(context, listen: false).episodeTitle,
-            showTitle:
-                Provider.of<SearchData>(context, listen: false).showTitle,
-            showPic: Provider.of<SearchData>(context, listen: false).showPic,
+            episodeURL: SearchData().episodeURL,
+            episodeTitle: SearchData().episodeTitle,
+            showTitle: SearchData().showTitle,
+            showPic: SearchData().showPic,
+            context: context,
           );
+
+      Provider.of<RecentTrackProvider>(context, listen: false).addRecentTrack(
+          episodeImage: searchData.episodePic,
+          showTitle: searchData.showTitle,
+          showImage: searchData.showPic,
+          episodeTitle: searchData.episodeTitle,
+          episodeDescription: searchData.episodeDescription,
+          episodeURL: searchData.episodeURL,
+          episodeLen: searchData.episodeLen,
+          showURL: searchData.showURL);
 
       Navigator.push(
         context,
@@ -52,37 +64,41 @@ class _LoadingScreenState extends State<LoadingScreen> {
       );
     }
 
-    if (Provider.of<AudioPlayerController>(context, listen: false).playType ==
-        'normal') {
-      context.read<AudioPlayerController>().initPlayer(
-            episodeURL: context.read<SearchData>().episodeURL,
-            episodeTitle:
-                Provider.of<SearchData>(context, listen: false).episodeTitle,
-            showTitle:
-                Provider.of<SearchData>(context, listen: false).showTitle,
-            showPic: Provider.of<SearchData>(context, listen: false).showPic,
-          );
+    // if (Provider.of<AudioPlayerController>(context, listen: false).playType ==
+    //     'normal') {
+    //   context.read<AudioPlayerController>().initPlayer(
+    //         episodeURL: SearchData().episodeURL,
+    //         episodeTitle: SearchData().episodeTitle,
+    //         showTitle: SearchData().showTitle,
+    //         showPic: SearchData().showPic,
+    //       );
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) {
-            return MainNav(
-              startIndex: 2,
-            );
-          },
-        ),
-      );
-    }
-    // if (searchType == 'search') {
-    //   Navigator.pushNamed(context, SearchResultsScreen.id);
+    //   Provider.of<RecentTrackProvider>(context, listen: false).addRecentTrack(
+    //       episodeImage: SearchData().episodePic,
+    //       showTitle: SearchData().showTitle,
+    //       showImage: SearchData().showPic,
+    //       episodeTitle: SearchData().episodeTitle,
+    //       episodeDescription: SearchData().episodeDescription,
+    //       episodeURL: SearchData().episodeURL,
+    //       episodeLen: SearchData().episodeLen,
+    //       showURL: SearchData().showURL);
+
+    //   Navigator.push(
+    //     context,
+    //     MaterialPageRoute(
+    //       builder: (context) {
+    //         return MainNav(
+    //           startIndex: 2,
+    //         );
+    //       },
+    //     ),
+    //   );
     // }
   }
 
   @override
   void initState() {
     super.initState();
-    // searchType = context.read<SearchData>().searchType;
     showData();
   }
 

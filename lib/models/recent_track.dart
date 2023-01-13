@@ -1,18 +1,42 @@
 class RecentTrack {
-  String episodeTitle;
-  String showTitle;
-  String episodePic;
+  final String episodeImage;
+  final String showTitle;
+  final String showImage;
+  final String episodeTitle;
+  final String episodeDescription;
+  final String episodeURL;
+  final String episodeLen;
+  final String showURL;
 
-  RecentTrack(this.episodePic, this.showTitle, this.episodeTitle);
+  RecentTrack({
+    required this.episodeImage,
+    required this.showTitle,
+    required this.showImage,
+    required this.episodeTitle,
+    required this.episodeDescription,
+    required this.episodeURL,
+    required this.episodeLen,
+    required this.showURL,
+  });
 
   RecentTrack.fromJson(Map<String, dynamic> json)
       : showTitle = json['showTitle'],
-        episodePic = json['episodePic'],
-        episodeTitle = json['episodeTitle'];
+        episodeImage = json['episodeImage'],
+        episodeTitle = json['episodeTitle'],
+        episodeDescription = json['episodeDescription'],
+        episodeLen = json['episodeLen'],
+        showURL = json['showURL'],
+        showImage = json['showImage'],
+        episodeURL = json['episodeURL'];
 
   Map<String, dynamic> toJson() => {
         'showTitle': showTitle,
-        'episodePic': episodePic,
+        'episodeImage': episodeImage,
         'episodeTitle': episodeTitle,
+        'episodeDescription': episodeDescription,
+        'episodeLen': episodeLen,
+        'showURL': showURL,
+        'episodeURL': episodeURL,
+        'showImage': showImage,
       };
 }

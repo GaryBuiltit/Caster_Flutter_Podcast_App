@@ -1,6 +1,6 @@
 import 'package:caster/providers/audio_player_controller_provider.dart';
+import 'package:caster/providers/recent_tracks_provider.dart';
 import 'package:caster/screens/episode_screen.dart';
-import 'package:caster/screens/loading_screen.dart';
 import 'package:caster/screens/main_nav.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -31,6 +31,7 @@ class EpisodeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // var searchData = Provider.of<SearchData>(context, listen: false);
     return SizedBox(
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 3.w),
@@ -116,15 +117,24 @@ class EpisodeCard extends StatelessWidget {
                     showURL: showURL);
 
                 context.read<AudioPlayerController>().initPlayer(
-                      episodeURL: context.read<SearchData>().episodeURL,
-                      episodeTitle:
-                          Provider.of<SearchData>(context, listen: false)
-                              .episodeTitle,
-                      showTitle: Provider.of<SearchData>(context, listen: false)
-                          .showTitle,
-                      showPic: Provider.of<SearchData>(context, listen: false)
-                          .showPic,
+                      episodeURL: episodeURL,
+                      episodeTitle: episodeTitle,
+                      showTitle: showTitle,
+                      showPic: showImage,
+                      context: context,
                     );
+
+                Provider.of<RecentTrackProvider>(context, listen: false)
+                    .addRecentTrack(
+                  episodeImage: episodeImage,
+                  showTitle: showTitle,
+                  showImage: showImage,
+                  episodeTitle: episodeTitle,
+                  episodeDescription: episodeDescription,
+                  episodeURL: episodeURL,
+                  episodeLen: episodeLen,
+                  showURL: showURL,
+                );
 
                 Navigator.push(
                   context,

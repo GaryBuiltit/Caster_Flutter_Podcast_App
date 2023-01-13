@@ -2,7 +2,8 @@
 
 import 'dart:math';
 
-import 'package:flutter/foundation.dart';
+// import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:podcast_search/podcast_search.dart';
 import 'package:caster/providers/podcast_search_data_provider.dart';
@@ -38,7 +39,7 @@ class AudioPlayerController with ChangeNotifier {
           (position, bufferedPosition, duration) => PositionData(
               position, bufferedPosition, duration ?? Duration.zero));
 
-  initPlayer({episodeURL, episodeTitle, showTitle, showPic}) async {
+  initPlayer({episodeURL, episodeTitle, showTitle, showPic, context}) async {
     try {
       await player.setAudioSource(
         AudioSource.uri(
@@ -53,6 +54,12 @@ class AudioPlayerController with ChangeNotifier {
       player.play();
     } catch (e) {
       print("Error loading audio source: $e");
+      showDialog(
+        context: context,
+        builder: (context) => const AlertDialog(
+          content: Text('Error loading episode audio'),
+        ),
+      );
     }
   }
 }

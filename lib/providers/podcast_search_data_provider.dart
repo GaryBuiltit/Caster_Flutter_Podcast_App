@@ -174,9 +174,6 @@ class SearchData with ChangeNotifier {
       showFeed = PodcastData().getdata(show.url!);
       showURL = show.url;
 
-      // var newTrack = RecentTrack(episodePic, showTitle, episodeTitle).toJson();
-      // RecentTrackProvider().addRecentTrack(newTrack);
-
       notifyListeners();
     }
 
@@ -212,11 +209,6 @@ class SearchData with ChangeNotifier {
       showPic = await show.image;
       showFeed = PodcastData().getdata(show.url!);
       showURL = results.items[showPicked].feedUrl.toString();
-
-      // var newTrack = await RecentTrack(
-      //         await episodePic, await showTitle, await episodeTitle)
-      //     .toJson();
-      // RecentTrackProvider().addRecentTrack(newTrack);
 
       notifyListeners();
     }

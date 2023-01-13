@@ -8,7 +8,7 @@ class FileManager {
   Future<File> get _localeSubFile async {
     final directory = await getApplicationDocumentsDirectory();
     var path = directory.path;
-    return File("$path/caster.json");
+    return File("$path/caster_subsciptions.json");
   }
 
 // writes to json file for subscriptions

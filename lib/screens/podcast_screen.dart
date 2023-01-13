@@ -1,8 +1,11 @@
 // ignore_for_file: avoid_print
 
+import 'package:caster/providers/podcast_search_data_provider.dart';
+import 'package:caster/providers/subscribe.dart';
 import 'package:caster/utilities/episode_card.dart';
 import 'package:flutter/material.dart';
 import 'package:podcast_search/podcast_search.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:async/async.dart';
 
@@ -132,6 +135,16 @@ class _PodcastScreenState extends State<PodcastScreen> {
           elevation: 0,
           foregroundColor: Colors.black,
           backgroundColor: Colors.grey[100],
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.bookmark_add),
+              onPressed: () {
+                context
+                    .read<Subscribe>()
+                    .addSubscription(widget.showURL.toString());
+              },
+            ),
+          ],
         ),
         body: FutureBuilder(
           future: initData(),

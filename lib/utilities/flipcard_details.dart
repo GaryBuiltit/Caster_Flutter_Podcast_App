@@ -82,11 +82,13 @@ class EpisodeFlipCard extends StatelessWidget {
                 fontWeight: FontWeight.w900,
               ),
             ),
-            Text(
-              context.watch<SearchData>().episodeDescription,
-              softWrap: true,
-              maxLines: 4,
-              overflow: TextOverflow.ellipsis,
+            Expanded(
+              child: Text(
+                context.watch<SearchData>().episodeDescription,
+                softWrap: true,
+                maxLines: 4,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
             Expanded(
               child: Align(
