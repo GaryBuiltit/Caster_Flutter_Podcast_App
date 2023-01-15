@@ -2,16 +2,16 @@
 
 import 'package:caster/providers/podcast_search_data_provider.dart';
 import 'package:caster/providers/subscribe.dart';
-import 'package:caster/utilities/flipcard_details.dart';
-import 'package:caster/utilities/player_controls_toggle.dart';
-import 'package:caster/utilities/track_info.dart';
-import 'package:caster/utilities/track_progress_bar.dart';
+import 'package:caster/components/flipcard_details.dart';
+import 'package:caster/components/player_controls_toggle.dart';
+import 'package:caster/components/track_info.dart';
+import 'package:caster/components/track_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:podcast_search/podcast_search.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
-import 'package:caster/utilities/player_controls.dart';
+import 'package:caster/components/player_controls.dart';
 import 'package:caster/providers/audio_player_controller_provider.dart';
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:marquee/marquee.dart';

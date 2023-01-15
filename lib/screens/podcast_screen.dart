@@ -2,7 +2,7 @@
 
 import 'package:caster/providers/podcast_search_data_provider.dart';
 import 'package:caster/providers/subscribe.dart';
-import 'package:caster/utilities/episode_card.dart';
+import 'package:caster/components/episode_card.dart';
 import 'package:flutter/material.dart';
 import 'package:podcast_search/podcast_search.dart';
 import 'package:provider/provider.dart';

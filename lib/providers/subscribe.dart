@@ -4,7 +4,7 @@ import 'package:caster/providers/podcast_data.dart';
 // import 'package:caster/providers/podcast_search_data_provider.dart';
 // import 'package:flutter/cupertino.dart';
 // import 'package:podcast_search/podcast_search.dart';
-import 'package:caster/utilities/show_card.dart';
+import 'package:caster/components/show_card.dart';
 import 'package:caster/file_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:webfeed/webfeed.dart';

@@ -1,7 +1,7 @@
 import 'package:caster/file_manager.dart';
 import 'package:caster/models/recent_track.dart';
 // import 'package:caster/providers/podcast_search_data_provider.dart';
-import 'package:caster/utilities/recently_played_card.dart';
+import 'package:caster/components/recently_played_card.dart';
 import 'package:flutter/material.dart';
 // import 'package:provider/provider.dart';
 

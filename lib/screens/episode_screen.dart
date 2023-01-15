@@ -14,7 +14,6 @@ class EpisodeScreen extends StatelessWidget {
   final String? episodePic;
   final String? episodeTitle;
   final String? showTitle;
-  // final String? showHost;
   final String? episodeDescription;
 
   // funtion to check if show image link provided is null or not

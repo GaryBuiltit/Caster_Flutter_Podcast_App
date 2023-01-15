@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 
 import 'package:caster/providers/audio_player_controller_provider.dart';
-import 'package:caster/utilities/player_controls.dart';
+import 'package:caster/components/player_controls.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 // import 'package:just_audio/just_audio.dart';

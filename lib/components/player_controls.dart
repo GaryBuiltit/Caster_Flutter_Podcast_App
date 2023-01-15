@@ -2,7 +2,7 @@
 
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:caster/providers/podcast_search_data_provider.dart';
-import 'package:caster/utilities/play_button.dart';
+import 'package:caster/components/play_button.dart';
 import 'package:flutter/material.dart';
 import 'package:caster/providers/audio_player_controller_provider.dart';
 import 'package:provider/provider.dart';

@@ -9,15 +9,15 @@ import 'package:caster/providers/podcast_data.dart';
 import 'package:caster/providers/recent_tracks_provider.dart';
 import 'package:caster/screens/loading_screen.dart';
 import 'package:caster/screens/search_result_screen.dart';
-import 'package:caster/utilities/episode_card.dart';
-import 'package:caster/utilities/show_card.dart';
+import 'package:caster/components/episode_card.dart';
+import 'package:caster/components/show_card.dart';
 import 'package:flutter/material.dart';
 import 'package:podcast_search/podcast_search.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:webfeed/webfeed.dart';
 
-import '../utilities/result_card.dart';
+import '../components/result_card.dart';
 
 class SearchData with ChangeNotifier {
   int limit = 100;

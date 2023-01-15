@@ -4,7 +4,7 @@ import 'package:caster/screens/homescreen.dart';
 import 'package:caster/screens/play_screen.dart';
 import 'package:caster/screens/recently_played_screen.dart';
 import 'package:caster/screens/subscriptions_screen.dart';
-import 'package:caster/utilities/player_controls_toggle.dart';
+import 'package:caster/components/player_controls_toggle.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

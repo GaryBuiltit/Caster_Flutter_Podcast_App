@@ -35,10 +35,10 @@ class _LoadingScreenState extends State<LoadingScreen> {
       }
 
       context.read<AudioPlayerController>().initPlayer(
-            episodeURL: SearchData().episodeURL,
-            episodeTitle: SearchData().episodeTitle,
-            showTitle: SearchData().showTitle,
-            showPic: SearchData().showPic,
+            episodeURL: searchData.episodeURL,
+            episodeTitle: searchData.episodeTitle,
+            showTitle: searchData.showTitle,
+            showPic: searchData.showPic,
             context: context,
           );
 
