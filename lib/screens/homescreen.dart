@@ -142,7 +142,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           if (context.read<SearchData>().searchType ==
                               'search') {
                             context.read<SearchData>().keywordSearch(context);
-                            // context.read<SearchData>().listenNotesSearch();
                             Navigator.pushNamed(
                                 context, SearchResultsScreen.id);
                           }

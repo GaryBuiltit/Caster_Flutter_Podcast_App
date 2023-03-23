@@ -164,7 +164,6 @@ class SearchData with ChangeNotifier {
       int episodePicked = Random().nextInt(show.episodes!.length);
 
       showTitle = await show.title;
-      print(showTitle);
       episodeTitle = await show.episodes?[episodePicked].title;
       episodePic = await show.episodes?[episodePicked].imageUrl;
       episodeURL = await show.episodes?[episodePicked].contentUrl;
@@ -277,10 +276,6 @@ class SearchData with ChangeNotifier {
         notifyListeners();
       }
     }
-    // if (searching == true) {
-    //   searching = false;
-    // }
-    // notifyListeners();
   }
 
 // **********function to generate episode results for keyword search in search mode************
