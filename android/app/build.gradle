@@ -32,7 +32,8 @@ def keystoreProperties = new Properties()
    }
 
 android {
-    compileSdkVersion localProperties.getProperty('flutter.compileSdkVersion')
+    compileSdkVersion 31
+    // localProperties.getProperty('flutter.compileSdkVersion')
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -48,10 +49,9 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.alford_digital.caster"
         minSdkVersion 21
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
