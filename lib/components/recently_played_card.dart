@@ -30,6 +30,14 @@ class RecentlyPlayedCard extends StatelessWidget {
   final String episodeLen;
   final String showURL;
 
+  picCheck(pic) {
+    if (pic != '') {
+      return NetworkImage(pic);
+    } else {
+      return const AssetImage('assets/images/image_error.jpg');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -62,7 +70,7 @@ class RecentlyPlayedCard extends StatelessWidget {
                             fit: BoxFit.cover,
                             height: 13.h,
                             width: 13.h,
-                            image: NetworkImage(episodeImage ?? showImage),
+                            image: picCheck(episodeImage ?? showImage),
                           ),
                         ),
                         Expanded(

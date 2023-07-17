@@ -56,7 +56,7 @@ class SearchData with ChangeNotifier {
     this.episodeDescription = episodeDescription;
     this.showPic = showPic;
     this.episodeTitle = episodeTitle;
-    this.episodePic = episodePic;
+    this.episodePic = episodePic == null ? showPic : episodePic;
     this.episodeLen = episodeLen;
     this.showURL = showURL;
     this.episodeURL = episodeURL;

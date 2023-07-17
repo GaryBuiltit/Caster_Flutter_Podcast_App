@@ -42,15 +42,19 @@ class _LoadingScreenState extends State<LoadingScreen> {
             context: context,
           );
 
-      Provider.of<RecentTrackProvider>(context, listen: false).addRecentTrack(
-          episodeImage: searchData.episodePic,
-          showTitle: searchData.showTitle,
-          showImage: searchData.showPic,
-          episodeTitle: searchData.episodeTitle,
-          episodeDescription: searchData.episodeDescription,
-          episodeURL: searchData.episodeURL,
-          episodeLen: searchData.episodeLen,
-          showURL: searchData.showURL);
+      try {
+        Provider.of<RecentTrackProvider>(context, listen: false).insertTrack(
+            episodeImage: searchData.episodePic,
+            showTitle: searchData.showTitle,
+            showImage: searchData.showPic,
+            episodeTitle: searchData.episodeTitle,
+            episodeDescription: searchData.episodeDescription,
+            episodeURL: searchData.episodeURL,
+            episodeLen: searchData.episodeLen,
+            showURL: searchData.showURL);
+      } catch (e) {
+        print('insert track error(loading screen): $e');
+      }
 
       Navigator.push(
         context,

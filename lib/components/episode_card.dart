@@ -125,7 +125,7 @@ class EpisodeCard extends StatelessWidget {
                     );
 
                 Provider.of<RecentTrackProvider>(context, listen: false)
-                    .addRecentTrack(
+                    .insertTrack(
                   episodeImage: episodeImage,
                   showTitle: showTitle,
                   showImage: showImage,

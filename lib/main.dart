@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     Provider.of<Subscribe>(context, listen: false).makeSubCards();
     Provider.of<SearchData>(context, listen: false).getPopular();
-    Provider.of<RecentTrackProvider>(context, listen: false).makeRecentCards();
+    Provider.of<RecentTrackProvider>(context, listen: false).getTracks();
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
