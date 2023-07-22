@@ -10,11 +10,13 @@ import 'package:caster/providers/podcast_search_data_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:just_audio_background/just_audio_background.dart';
+import 'recent_tracks_provider.dart';
 
 class AudioPlayerController with ChangeNotifier {
   var trackID = 0;
   var player = AudioPlayer();
   var playType;
+  late Duration currentPosition;
   // var episodeTitle;
   // var showTitle;
   // var showPic;
@@ -27,7 +29,12 @@ class AudioPlayerController with ChangeNotifier {
     player.dispose();
   }
 
-  void stop() {
+  void stopPlayer(context) async {
+    Provider.of<RecentTrackProvider>(context, listen: false)
+        .currentTrackPosition = player.position;
+    Provider.of<RecentTrackProvider>(context, listen: false).updateTrack(
+        Provider.of<SearchData>(context, listen: false).showTitle,
+        Provider.of<SearchData>(context, listen: false).episodeTitle);
     player.stop();
   }
 

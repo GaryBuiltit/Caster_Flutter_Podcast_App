@@ -39,7 +39,7 @@ class SearchData with ChangeNotifier {
   var episodeTitle;
   var episodePic;
   var episodeURL;
-  var episodeLen;
+  late Duration episodeLen;
   var episodeDescription;
   var showURL;
 
@@ -167,7 +167,7 @@ class SearchData with ChangeNotifier {
       episodeTitle = await show.episodes?[episodePicked].title;
       episodePic = await show.episodes?[episodePicked].imageUrl;
       episodeURL = await show.episodes?[episodePicked].contentUrl;
-      episodeLen = await show.episodes?[episodePicked].duration;
+      episodeLen = await show.episodes?[episodePicked].duration ?? Duration();
       episodeDescription = await show.episodes?[episodePicked].description;
       showPic = await show.image;
       showFeed = PodcastData().getdata(show.url!);
@@ -203,7 +203,7 @@ class SearchData with ChangeNotifier {
       episodeTitle = await show.episodes?[episodePicked].title;
       episodePic = await show.episodes?[episodePicked].imageUrl;
       episodeURL = await show.episodes?[episodePicked].contentUrl;
-      episodeLen = await show.episodes?[episodePicked].duration;
+      episodeLen = await show.episodes?[episodePicked].duration ?? Duration();
       episodeDescription = await show.episodes?[episodePicked].description;
       showPic = await show.image;
       showFeed = PodcastData().getdata(show.url!);

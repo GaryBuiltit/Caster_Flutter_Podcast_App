@@ -148,7 +148,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           if (context.read<SearchData>().searchType ==
                               'discovery') {
                             if (player.playing) {
-                              player.stop();
+                              Provider.of<AudioPlayerController>(context,
+                                      listen: true)
+                                  .stopPlayer(context);
                             }
                             context.read<AudioPlayerController>().playType =
                                 'discovery';

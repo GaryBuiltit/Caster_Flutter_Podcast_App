@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:caster/caster_database.dart';
 
 class RecentTrackProvider extends ChangeNotifier {
+  late Duration currentTrackPosition;
   List<Widget> recentCards = [];
 
   String formatDuration(Duration duration) {
@@ -25,7 +26,6 @@ class RecentTrackProvider extends ChangeNotifier {
     episodeURL,
     episodeLen,
     showURL,
-    completed,
     currentPosition,
   }) async {
     final db = await DataBase().initializedDB();
@@ -39,21 +39,17 @@ class RecentTrackProvider extends ChangeNotifier {
         episodeTitle: episodeTitle ?? '',
         episodeDescription: episodeDescription ?? '',
         episodeURL: episodeURL ?? '',
-        episodeLen: episodeLen.runtimeType == Duration
-            ? formatDuration(episodeLen ??
-                const Duration(
-                  hours: 0,
-                  minutes: 0,
-                  seconds: 0,
-                ))
-            : episodeLen,
+        episodeLen: episodeLen,
+        // episodeLen: episodeLen.runtimeType == Duration
+        //     ? formatDuration(episodeLen ??
+        //         const Duration(
+        //           hours: 0,
+        //           minutes: 0,
+        //           seconds: 0,
+        //         ))
+        //     : episodeLen,
         showURL: showURL,
-        completed: completed,
-        currentPosition: formatDuration(const Duration(
-          hours: 0,
-          minutes: 0,
-          seconds: 0,
-        )),
+        currentPosition: '0',
       );
 
       await db.insert('recent_tracks', newtrack.toMap());
@@ -73,6 +69,8 @@ class RecentTrackProvider extends ChangeNotifier {
     try {
       for (var i = 0; i < trackMaps.length; i++) {
         // print(trackMaps[i]['show_title']);
+        // print(trackMaps[i]['episode_length'].toString());
+        // print(trackMaps[i]['current_position'].toString());
         recentCards.add(RecentlyPlayedCard(
           episodeImage: trackMaps[i]['episode_image'],
           showTitle: trackMaps[i]['show_title'] ?? '',
@@ -80,26 +78,11 @@ class RecentTrackProvider extends ChangeNotifier {
           episodeTitle: trackMaps[i]['episode_title'] ?? '',
           episodeDescription: trackMaps[i]['episode_description'] ?? '',
           episodeURL: trackMaps[i]['episode_url'] ?? '',
-          episodeLen: trackMaps[i]['episode_length'] ?? '',
+          episodeLen: trackMaps[i]['episode_length'].toString(),
           showURL: trackMaps[i]['showURL'] ?? '',
+          currentPosition: trackMaps[i]['current_position'].toString(),
         ));
       }
-
-      // List.generate(
-      //     trackMaps.length,
-      //     (i) => {
-      //           print(trackMaps[i]['showTitle']),
-      //           // recentCards.add(RecentlyPlayedCard(
-      //           //   episodeImage: trackMaps[i]['episodeImage'],
-      //           //   showTitle: trackMaps[i]['showTitle'] ?? '',
-      //           //   showImage: trackMaps[i]['showImage'] ?? '',
-      //           //   episodeTitle: trackMaps[i]['episodeTitle'] ?? '',
-      //           //   episodeDescription: trackMaps[i]['episodeDescription'] ?? '',
-      //           //   episodeURL: trackMaps[i]['episodeURL'] ?? '',
-      //           //   episodeLen: trackMaps[i]['episodeLen'] ?? '',
-      //           //   showURL: trackMaps[i]['showURL'] ?? '',
-      //           // )),
-      //         });
     } catch (e) {
       print('Error getting recents: $e');
     }
@@ -112,108 +95,14 @@ class RecentTrackProvider extends ChangeNotifier {
     final List<Map<String, dynamic>> tracks = await db.query('recent_tracks');
     final Map<String, dynamic> track = tracks.firstWhere((e) =>
         e['show_title'] == showTitle && e['episode_title'] == episodeTitle);
-    track['current_position'] = '';
-    db.update('recent_tracks', track,
-        where: 'id = ?', whereArgs: [track['id']]);
+    final Map<String, dynamic> trackMapClone = Map.of(track);
+    try {
+      trackMapClone.update('current_position',
+          (value) => currentTrackPosition.inSeconds.toString());
+      db.update('recent_tracks', trackMapClone,
+          where: 'id = ?', whereArgs: [trackMapClone['id']]);
+    } catch (e) {
+      print('update track error: $e');
+    }
   }
-
-  // void addRecentTrack(
-  //     {episodeImage,
-  //     showTitle,
-  //     showImage,
-  //     episodeTitle,
-  //     episodeDescription,
-  //     episodeURL,
-  //     episodeLen,
-  //     showURL}) async {
-  //   List<dynamic> tracks = [];
-  //   var recents = await FileManager().readRecentsFile();
-  //   if (recents != null) {
-  //     try {
-  //       tracks = recents['recent tracks'];
-  //       RecentTrack newtrack = RecentTrack(
-  //         episodeImage: episodeImage,
-  //         showTitle: showTitle,
-  //         showImage: showImage,
-  //         episodeTitle: episodeTitle,
-  //         episodeDescription: episodeDescription,
-  //         episodeURL: episodeURL,
-  //         episodeLen: episodeLen.runtimeType == Duration
-  //             ? formatDuration(episodeLen ??
-  //                 const Duration(
-  //                   hours: 0,
-  //                   minutes: 0,
-  //                   seconds: 0,
-  //                 ))
-  //             : episodeLen,
-  //         showURL: showURL,
-  //       );
-  //       tracks.add(newtrack);
-  //       Map<String, List<dynamic>> recentsFileFormat = {
-  //         "recent tracks": tracks
-  //       };
-  //       await FileManager().writeRecentsToFile(recentsFileFormat);
-  //     } catch (e) {
-  //       print('AddRecentTrackError: $e');
-  //     }
-  //   } else {
-  //     try {
-  //       RecentTrack newtrack = RecentTrack(
-  //         episodeImage: episodeImage,
-  //         showTitle: showTitle,
-  //         showImage: showImage,
-  //         episodeTitle: episodeTitle,
-  //         episodeDescription: episodeDescription,
-  //         episodeURL: episodeURL,
-  //         episodeLen: episodeLen,
-  //         showURL: showURL,
-  //       );
-  //       tracks.add(newtrack);
-  //       Map<String, List<dynamic>> recentsFileFormat = {
-  //         "recent tracks": tracks
-  //       };
-  //       await FileManager().writeRecentsToFile(recentsFileFormat);
-  //     } catch (e) {
-  //       print('error while adding recent track: $e');
-  //     }
-  //   }
-  //   makeRecentCards();
-  //   // notifyListeners();
-  // }
-
-  // makeRecentCards() async {
-  //   var recents = await FileManager().readRecentsFile();
-  //   if (recents != null) {
-  //     recentCards.clear();
-  //     List<dynamic> recentsList = await getTracks();
-  //     for (var recentTrack in recentsList) {
-  //       var trackMap = recentTrack as Map;
-  //       try {
-  //         String episodeImage = trackMap['episodeImage'];
-  //         String showTitle = trackMap['showTitle'];
-  //         String showImage = trackMap['showImage'];
-  //         String episodeTitle = trackMap['episodeTitle'];
-  //         String episodeDescription = trackMap['episodeDescription'];
-  //         String episodeURL = trackMap['episodeURL'];
-  //         String episodeLen = trackMap['episodeLen'];
-  //         String showURL = trackMap['showURL'];
-
-  //         var recentCard = RecentlyPlayedCard(
-  //           episodeImage: episodeImage,
-  //           showTitle: showTitle,
-  //           showImage: showImage,
-  //           episodeTitle: episodeTitle,
-  //           episodeDescription: episodeDescription,
-  //           episodeURL: episodeURL,
-  //           episodeLen: episodeLen,
-  //           showURL: showURL,
-  //         );
-  //         recentCards.add(recentCard);
-  //       } catch (e) {
-  //         print('Error creating recents card: $e');
-  //       }
-  //     }
-  //     notifyListeners();
-  //   }
-  // }
 }

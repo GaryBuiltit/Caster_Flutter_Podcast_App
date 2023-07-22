@@ -17,4 +17,10 @@ class Subscription {
         'showURL': showURL,
         // 'show': show.toString(),
       };
+
+  Map<String, dynamic> toMap() => {
+        'show_title': showTitle,
+        'show_pic': showPic,
+        'show_url': showURL,
+      };
 }

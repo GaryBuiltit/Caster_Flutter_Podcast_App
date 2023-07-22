@@ -8,7 +8,6 @@ class RecentTrack {
   final String episodeURL;
   final String episodeLen;
   final String showURL;
-  final bool completed;
   final String currentPosition;
 
   RecentTrack({
@@ -21,7 +20,6 @@ class RecentTrack {
     required this.episodeURL,
     required this.episodeLen,
     required this.showURL,
-    required this.completed,
     required this.currentPosition,
   });
 
@@ -56,5 +54,6 @@ class RecentTrack {
         'show_url': showURL,
         'episode_url': episodeURL,
         'show_image': showImage,
+        'current_position': currentPosition,
       };
 }

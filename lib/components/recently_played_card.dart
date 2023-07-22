@@ -20,6 +20,7 @@ class RecentlyPlayedCard extends StatelessWidget {
     required this.episodeURL,
     required this.episodeLen,
     required this.showURL,
+    required this.currentPosition,
   }) : super(key: key);
   final String? episodeImage;
   final String showTitle;
@@ -29,6 +30,7 @@ class RecentlyPlayedCard extends StatelessWidget {
   final String episodeURL;
   final String episodeLen;
   final String showURL;
+  final String currentPosition;
 
   picCheck(pic) {
     if (pic != '') {
@@ -36,6 +38,17 @@ class RecentlyPlayedCard extends StatelessWidget {
     } else {
       return const AssetImage('assets/images/image_error.jpg');
     }
+  }
+
+  timeRemaining() {
+    int timeLeftSeconds = int.parse(episodeLen) - int.parse(currentPosition);
+    Duration timeLeft = Duration(seconds: timeLeftSeconds);
+    String hours = timeLeft.inHours.toString().padLeft(0, '2');
+    String minutes =
+        timeLeft.inMinutes.remainder(60).toString().padLeft(2, '0');
+    String seconds =
+        timeLeft.inSeconds.remainder(60).toString().padLeft(2, '0');
+    return "$hours:$minutes:$seconds left";
   }
 
   @override
@@ -120,7 +133,7 @@ class RecentlyPlayedCard extends StatelessWidget {
                     episodeTitle: episodeTitle,
                     episodePic: episodeImage ?? showImage,
                     episodeURL: episodeURL,
-                    episodeLen: episodeLen,
+                    episodeLen: Duration(seconds: int.parse(episodeLen)),
                     episodeDescription: episodeDescription,
                     showURL: showURL);
 
@@ -134,6 +147,11 @@ class RecentlyPlayedCard extends StatelessWidget {
                       showPic: Provider.of<SearchData>(context, listen: false)
                           .showPic,
                     );
+
+                context
+                    .read<AudioPlayerController>()
+                    .player
+                    .seek(Duration(seconds: int.parse(currentPosition)));
 
                 Navigator.push(
                   context,
@@ -162,7 +180,7 @@ class RecentlyPlayedCard extends StatelessWidget {
                     color: Colors.black,
                   ),
                   Text(
-                    episodeLen,
+                    timeRemaining(),
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 10.sp,

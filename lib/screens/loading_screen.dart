@@ -50,7 +50,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
             episodeTitle: searchData.episodeTitle,
             episodeDescription: searchData.episodeDescription,
             episodeURL: searchData.episodeURL,
-            episodeLen: searchData.episodeLen,
+            episodeLen: searchData.episodeLen.inSeconds.toString(),
             showURL: searchData.showURL);
       } catch (e) {
         print('insert track error(loading screen): $e');

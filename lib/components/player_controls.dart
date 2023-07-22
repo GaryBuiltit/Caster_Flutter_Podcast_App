@@ -16,6 +16,7 @@ class PlayerControls extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        // *************** rewind 30 sec button ***************
         StreamBuilder<PositionData>(
             stream: Provider.of<AudioPlayerController>(context, listen: true)
                 .positionDataStream,
@@ -41,6 +42,7 @@ class PlayerControls extends StatelessWidget {
                 },
               );
             }),
+        // ***************** play button ***************
         StreamBuilder<PlayerState>(
           stream: Provider.of<AudioPlayerController>(context, listen: false)
               .player
@@ -53,6 +55,34 @@ class PlayerControls extends StatelessWidget {
                     .player);
           },
         ),
+        // fastfowrd button
+        StreamBuilder<PositionData>(
+            stream: Provider.of<AudioPlayerController>(context, listen: true)
+                .positionDataStream,
+            builder: (context, snapshot) {
+              final duration = snapshot.data;
+              return IconButton(
+                iconSize: 64,
+                padding: EdgeInsets.only(right: 15),
+                icon: Icon(
+                  Icons.forward_30_rounded,
+                ),
+                onPressed: () {
+                  if (duration!.position.inSeconds >
+                      searchData.episodeLen.inSeconds - 30) {
+                    Provider.of<AudioPlayerController>(context, listen: false)
+                        .player
+                        .seek(Duration(seconds: 0));
+                  } else {
+                    Provider.of<AudioPlayerController>(context, listen: false)
+                        .player
+                        .seek(Duration(
+                            seconds: duration.position.inSeconds + 30));
+                  }
+                },
+              );
+            }),
+        // skip button
         searchData.searchType == 'discovery'
             ? IconButton(
                 iconSize: 64,
@@ -60,6 +90,18 @@ class PlayerControls extends StatelessWidget {
                   Icons.skip_next,
                 ),
                 onPressed: () async {
+                  Provider.of<RecentTrackProvider>(context, listen: false)
+                          .currentTrackPosition =
+                      Provider.of<AudioPlayerController>(context, listen: false)
+                          .player
+                          .position;
+                  Provider.of<RecentTrackProvider>(context, listen: false)
+                      .updateTrack(
+                          Provider.of<SearchData>(context, listen: false)
+                              .showTitle,
+                          Provider.of<SearchData>(context, listen: false)
+                              .episodeTitle);
+
                   await Provider.of<SearchData>(context, listen: false)
                       .discoverySearch();
 
@@ -83,7 +125,8 @@ class PlayerControls extends StatelessWidget {
                           episodeTitle: searchData.episodeTitle,
                           episodeDescription: searchData.episodeDescription,
                           episodeURL: searchData.episodeURL,
-                          episodeLen: searchData.episodeLen,
+                          episodeLen:
+                              searchData.episodeLen.inSeconds.toString(),
                           showURL: searchData.showURL);
                 },
               )
